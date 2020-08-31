@@ -6,3 +6,4 @@ MIT
 
 ## Authors
 @sandrich - Christian Sandrini
+@bigskapinsky - Calixte Mayoraz
