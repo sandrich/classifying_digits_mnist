@@ -6,4 +6,4 @@ def main():
 
 
 if __name__ == "__main__":
-    dataset.load_test_data()
+    print(dataset.load_train_data())
