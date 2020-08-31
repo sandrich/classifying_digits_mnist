@@ -46,9 +46,10 @@ def __load_data(which: str = "train"):
     """
     if not __check_downloaded(which):
         print(f"No local {which} dataset found.")
-        __download_data(which)
-    data = np.load(f'{which}_data.npy')
-    labels = np.load(f'{which}_labels.npy')
+        data, labels = __download_data(which)
+    else:
+        data = np.load(f'{which}_data.npy')
+        labels = np.load(f'{which}_labels.npy')
     return data, labels
 
 
@@ -94,6 +95,7 @@ def __download_data(which: str = "train"):
     np.save(f"{which}_data", data)
     np.save(f"{which}_labels", labels)
     np.save(f"{which}_dims", dims)
+    return data, labels
 
 
 def __download_show_progress_bar(url, fp):
