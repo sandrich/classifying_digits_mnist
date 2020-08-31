@@ -1,0 +1,4 @@
+name: mnist_classifier
+channels:
+dependencies:
+  - pandas
