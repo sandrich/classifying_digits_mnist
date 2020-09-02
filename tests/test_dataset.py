@@ -21,7 +21,7 @@ def load_data_and_cleanup(which: str = "train"):
     return data, labels
 
 
-class Test(unittest.TestCase):
+class TestDataset(unittest.TestCase):
 
     def test_loadTrainData(self):
         data, _ = load_data_and_cleanup('train')
