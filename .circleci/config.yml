@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build-and-test:
     docker:
-      - image: centos8
+      - image: centos:8
    
     steps:
       - checkout
