@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import os
 sys.path.append('../src')  # import the dir
-import dataset
+from src import dataset
 
 
 def load_data_and_cleanup(which: str = "train"):

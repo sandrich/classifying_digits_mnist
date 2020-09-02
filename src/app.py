@@ -1,5 +1,29 @@
 import dataset
 import argparse
+from sklearn.ensemble import RandomForestClassifier
+
+def train(samples, labels, trees, depth, impurity_method):
+    """
+    This function trains the dataset using RandomForest algorithm
+
+    :param
+        samples: Dataset with samples
+        labels: Labels matching the dataset
+        trees: Number of trees
+        depth: Maximum tree depth
+        impurity_method: Impurity node method used (Entropy, Gini)
+    
+
+    :return
+        Returns train instance for further processing
+    """
+    retval = RandomForestClassifier(n_estimators=trees, 
+        max_depth=depth,
+        criterion=impurity_method)
+    
+    retval.fit(samples, labels)
+
+    return retval
 
 
 def main():
