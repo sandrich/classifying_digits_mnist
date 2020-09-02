@@ -21,11 +21,11 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            conda env create -f environment.yml
+            /opt/conda/bin/conda env create -f environment.yml
       
       - run:
           command: |
-            conda activate mnist_classifier
+            /opt/conda/bin/conda activate mnist_classifier
             python ./manage.py test
           name: Test
 
