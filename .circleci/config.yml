@@ -16,7 +16,7 @@ jobs:
       - run:
           command: |
             source activate mnist_classifier
-            python ./manage.py test
+            python -m unittest discover tests
           name: Test
 
 workflows:
