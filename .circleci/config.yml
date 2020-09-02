@@ -25,7 +25,7 @@ jobs:
       
       - run:
           command: |
-            /opt/conda/bin/conda activate mnist_classifier
+            source activate mnist_classifier
             python ./manage.py test
           name: Test
 
