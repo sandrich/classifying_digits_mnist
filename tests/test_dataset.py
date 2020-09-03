@@ -2,7 +2,6 @@ import sys
 import unittest
 import numpy as np
 import os
-sys.path.append('../src')  # import the dir
 from src import dataset
 
 
@@ -25,26 +24,26 @@ class TestDataset(unittest.TestCase):
 
     def test_loadTrainData(self):
         data, _ = load_data_and_cleanup('train')
-        expected = np.load('exp_train_data.npy')
+        expected = np.load('tests/exp_train_data.npy')
         expected = expected.astype(int)
         np.testing.assert_almost_equal(data[0], expected)
 
     def test_loadTrainLabels(self):
         _, labels = load_data_and_cleanup('train')
 
-        expected = np.load('exp_train_labels.npy')
+        expected = np.load('tests/exp_train_labels.npy')
         expected = expected.astype(int)
         np.testing.assert_almost_equal(labels[0], expected)
 
     def test_loadTestData(self):
         data, _ = load_data_and_cleanup('test')
 
-        expected = np.load('exp_test_data.npy')
+        expected = np.load('tests/exp_test_data.npy')
         expected = expected.astype(int)
         np.testing.assert_almost_equal(data[0], expected)
 
     def test_loadTestLabels(self):
         _, labels = load_data_and_cleanup('test')
-        expected = np.load('exp_test_labels.npy')
+        expected = np.load('tests/exp_test_labels.npy')
         expected = expected.astype(int)
         np.testing.assert_almost_equal(labels[0], expected)
