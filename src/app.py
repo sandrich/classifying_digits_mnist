@@ -1,4 +1,4 @@
-import dataset
+from src import dataset
 import argparse
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
@@ -18,6 +18,15 @@ def train(samples, labels, trees, depth, impurity_method):
     :return
         Returns train instance for further processing
     """
+    if trees < 1:
+        raise ValueError('Number of trees have to be greater than 0')
+
+    if depth < 1:
+        raise ValueError('Depth of a tree has to be greater than 0')
+
+    if impurity_method not in ['entropy', 'gini']:
+        raise ValueError('Impurity method supported: entropy, gini')
+    
     retval = RandomForestClassifier(n_estimators=trees, 
         max_depth=depth,
         criterion=impurity_method)
