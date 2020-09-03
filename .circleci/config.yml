@@ -3,30 +3,20 @@ version: 2.1
 jobs:
   build-and-test:
     docker:
-      - image: centos:8
+      - image: continuumio/miniconda3
    
     steps:
       - checkout
-      - run:
-          name: Setup container
-          command: |
-            dnf install 'dnf-command(config-manager)' -y
-            rpm --import https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc
-            dnf config-manager --add-repo https://repo.anaconda.com/pkgs/misc/rpmrepo/conda
-            dnf update -y
-            dnf install -y conda git
-            dnf clean all
-            rm -rf /var/cache/dnf
             
       - run:
           name: install dependencies
           command: |
-            /opt/conda/bin/conda env create -f environment.yml
+            conda env create -f environment.yml
       
       - run:
           command: |
-            /opt/conda/bin/conda activate mnist_classifier
-            python ./manage.py test
+            source activate mnist_classifier
+            python -m unittest discover tests
           name: Test
 
 workflows:
