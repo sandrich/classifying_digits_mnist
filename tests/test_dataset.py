@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 import os
 sys.path.append('../src')  # import the dir
-import dataset
+from src import dataset
 
 
 def load_data_and_cleanup(which: str = "train"):
@@ -21,30 +21,30 @@ def load_data_and_cleanup(which: str = "train"):
     return data, labels
 
 
-class Test(unittest.TestCase):
+class TestDataset(unittest.TestCase):
 
     def test_loadTrainData(self):
-        data, labels = load_data_and_cleanup('train')
+        data, _ = load_data_and_cleanup('train')
         expected = np.load('exp_train_data.npy')
         expected = expected.astype(int)
         np.testing.assert_almost_equal(data[0], expected)
 
     def test_loadTrainLabels(self):
-        data, labels = load_data_and_cleanup('train')
+        _, labels = load_data_and_cleanup('train')
 
         expected = np.load('exp_train_labels.npy')
         expected = expected.astype(int)
         np.testing.assert_almost_equal(labels[0], expected)
 
     def test_loadTestData(self):
-        data, labels = load_data_and_cleanup('test')
+        data, _ = load_data_and_cleanup('test')
 
         expected = np.load('exp_test_data.npy')
         expected = expected.astype(int)
         np.testing.assert_almost_equal(data[0], expected)
 
     def test_loadTestLabels(self):
-        data, labels = load_data_and_cleanup('test')
+        _, labels = load_data_and_cleanup('test')
         expected = np.load('exp_test_labels.npy')
         expected = expected.astype(int)
         np.testing.assert_almost_equal(labels[0], expected)
