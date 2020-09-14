@@ -126,7 +126,7 @@ def run_classification(train_data, train_labels, test_data, test_labels, trees, 
         }, 'actual': {
             'train': train_labels,
             'test': test_labels
-        }}
+        }, 'model': classifier}
 
     return cache
 
@@ -143,5 +143,5 @@ def print_results(args, cache):
 
 
 def display_results(cache):
-    #visualizer.display_confusion_matrix(cache['actual']['test'], cache['prediction']['test'])
     visualizer.display_train_test_matrices(cache)
+    visualizer.display_rf_feature_importance(cache)
