@@ -1,6 +1,9 @@
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-import sys
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+from . import visualizer
+import os
+import pickle
 
 
 def train(samples, labels, trees, depth, impurity_method):
@@ -13,7 +16,7 @@ def train(samples, labels, trees, depth, impurity_method):
         trees: Number of trees
         depth: Maximum tree depth
         impurity_method: Impurity node method used (Entropy, Gini)
-
+        save_model: whether to save the model to disk or not
 
     :return
         Returns train instance for further processing
@@ -38,7 +41,17 @@ def train(samples, labels, trees, depth, impurity_method):
     return retval
 
 
-def prediction(classifier, samples):
+def load_model(fp):
+    print("Loading model", fp)
+    return pickle.load(open(fp, 'rb'))
+
+
+def save_model(classifier, fp):
+    print("Saving model as", fp)
+    pickle.dump(classifier, open(fp, 'wb'))
+
+
+def predict(classifier, samples):
     """
     Returns prediction of the class labels for input
 
@@ -61,7 +74,8 @@ def accuracy(labels, pred, show=False):
     return np.sum(pred == labels) / len(labels)
 
 
-def run_classification(train_data, train_labels, test_data, test_labels, trees, depth, impurity_method):
+def run_classification(train_data, train_labels, test_data, test_labels, trees, depth, impurity_method, model_to_save,
+                       model_to_load=None):
     """
     Trains and tests the classification
 
@@ -73,6 +87,9 @@ def run_classification(train_data, train_labels, test_data, test_labels, trees, 
         trees: Number of trees
         depth: Maximum tree depth
         impurity_method: Impurity node method used (Entropy, Gini)
+        save_model: filepath to save the trained model
+        model_to_load: filepath of saved model to load instead of training
+
 
     :return
         Returns collection with prediction and accuracy
@@ -84,15 +101,34 @@ def run_classification(train_data, train_labels, test_data, test_labels, trees, 
                 train: float
                 test: float
     """
-    classifier = train(train_data, train_labels, trees, depth, impurity_method)
+    if model_to_load is not None and os.path.exists(model_to_load):
+        classifier = load_model(model_to_load)
+    else:
+        if model_to_load is not None:
+            print(f"Couldn't find the model {model_to_load}... training a new model.")
+        classifier = train(train_data, train_labels, trees, depth, impurity_method)
 
-    train_pred = prediction(classifier, train_data)
-    test_pred = prediction(classifier, test_data)
+    if model_to_save is not None:
+        save_model(classifier, model_to_save)
+
+    train_pred = predict(classifier, train_data)
+    test_pred = predict(classifier, test_data)
+
 
     train_acc = accuracy(train_labels, train_pred)
     test_acc = accuracy(test_labels, test_pred)
 
-    cache = {'prediction': {'train': train_pred, 'test': test_pred}, 'accuracy': {'train': train_acc, 'test': test_acc}}
+    cache = {
+        'prediction': {
+            'train': train_pred,
+            'test': test_pred
+        }, 'accuracy': {
+            'train': train_acc,
+            'test': test_acc
+        }, 'actual': {
+            'train': train_labels,
+            'test': test_labels
+        }, 'model': classifier}
 
     return cache
 
@@ -105,6 +141,9 @@ def print_results(args, cache):
     print('Impurity method: {}'.format(args.impurity_method))
     print('-----------------')
     print('Train Accuracy: {0:.3f}'.format(cache['accuracy']['train']))
-    print('Train Accuracy: {0:.3f}'.format(cache['accuracy']['test']))
+    print('Test  Accuracy: {0:.3f}'.format(cache['accuracy']['test']))
 
 
+def display_results(cache):
+    visualizer.display_train_test_matrices(cache)
+    visualizer.display_rf_feature_importance(cache)
