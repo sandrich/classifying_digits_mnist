@@ -1,4 +1,5 @@
-from src import dataset, random_forest
+from src import dataset
+from src.random_forest import  RandomForest
 import argparse
 
 
@@ -20,12 +21,9 @@ def main():
     test_data, test_labels = dataset.load_test_data()
 
     # Run classifier
-    cache = random_forest.run_classification(train_data, train_labels, test_data, test_labels, args.trees, args.depth,
-                               args.impurity_method, args.save_RF, args.load_RF)
-
-    random_forest.print_results(args, cache)
-
-    random_forest.display_results(cache)
+    rf_classifier = RandomForest(trees=args.trees, depth=args.depth, impurity_method=args.impurity_method)
+    rf_classifier.run_classification(train_data, train_labels, test_data, test_labels,
+                                             args.save_RF, args.load_RF)
 
 
 if __name__ == "__main__":

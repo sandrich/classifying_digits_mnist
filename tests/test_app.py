@@ -1,15 +1,15 @@
 import unittest
-from src import random_forest
+from src.random_forest import RandomForest
 
 
 class TestApp(unittest.TestCase):
     
     def test_train(self):
         with self.assertRaises(ValueError):
-            _ = random_forest.train([[1]], [1], 0, 1, 'entropy')
-        
-        with self.assertRaises(ValueError):
-            _ = random_forest.train([[1]], [1], 1, 0, 'entropy')
+            _ = RandomForest(trees=0, depth=1, impurity_method='entropy')
 
         with self.assertRaises(ValueError):
-            _ = random_forest.train([[1]], [1], 1, 1, 'test')
+            _ = RandomForest(trees=1, depth=0, impurity_method='entropy')
+
+        with self.assertRaises(ValueError):
+            _ = RandomForest(trees=1, depth=1, impurity_method='test')
