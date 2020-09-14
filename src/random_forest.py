@@ -90,6 +90,7 @@ def run_classification(train_data, train_labels, test_data, test_labels, trees, 
         save_model: filepath to save the trained model
         model_to_load: filepath of saved model to load instead of training
 
+
     :return
         Returns collection with prediction and accuracy
         cache:
@@ -112,6 +113,7 @@ def run_classification(train_data, train_labels, test_data, test_labels, trees, 
 
     train_pred = predict(classifier, train_data)
     test_pred = predict(classifier, test_data)
+
 
     train_acc = accuracy(train_labels, train_pred)
     test_acc = accuracy(test_labels, test_pred)

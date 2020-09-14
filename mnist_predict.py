@@ -14,6 +14,7 @@ def main():
     if args.save_RF is not None and args.load_RF is not None:
         print("Can't load and save a model at the same time... please choose just one of the two options")
         exit(0)
+
     # Load dataset
     train_data, train_labels = dataset.load_train_data()
     test_data, test_labels = dataset.load_test_data()
