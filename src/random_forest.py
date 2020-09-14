@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from . import visualizer
 import os
 import pickle
@@ -115,7 +116,17 @@ def run_classification(train_data, train_labels, test_data, test_labels, trees, 
     train_acc = accuracy(train_labels, train_pred)
     test_acc = accuracy(test_labels, test_pred)
 
-    cache = {'prediction': {'train': train_pred, 'test': test_pred}, 'accuracy': {'train': train_acc, 'test': test_acc}}
+    cache = {
+        'prediction': {
+            'train': train_pred,
+            'test': test_pred
+        }, 'accuracy': {
+            'train': train_acc,
+            'test': test_acc
+        }, 'actual': {
+            'train': train_labels,
+            'test': test_labels
+        }}
 
     return cache
 
@@ -128,8 +139,9 @@ def print_results(args, cache):
     print('Impurity method: {}'.format(args.impurity_method))
     print('-----------------')
     print('Train Accuracy: {0:.3f}'.format(cache['accuracy']['train']))
-    print('Train Accuracy: {0:.3f}'.format(cache['accuracy']['test']))
+    print('Test  Accuracy: {0:.3f}'.format(cache['accuracy']['test']))
 
 
-def display_results(args, cache):
-    print(cache[''])
+def display_results(cache):
+    #visualizer.display_confusion_matrix(cache['actual']['test'], cache['prediction']['test'])
+    visualizer.display_train_test_matrices(cache)

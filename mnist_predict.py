@@ -11,7 +11,7 @@ def main():
     parser.add_argument('--load_RF', help="Loads a trained Random Forest model from disk", default=None)
 
     args = parser.parse_args()
-    if args.save_RF_model is not None and args.load_RF_model is not None:
+    if args.save_RF is not None and args.load_RF is not None:
         print("Can't load and save a model at the same time... please choose just one of the two options")
         exit(0)
     # Load dataset
@@ -20,9 +20,11 @@ def main():
 
     # Run classifier
     cache = random_forest.run_classification(train_data, train_labels, test_data, test_labels, args.trees, args.depth,
-                               args.impurity_method, args.save_RF_model, args.load_RF_model)
+                               args.impurity_method, args.save_RF, args.load_RF)
 
     random_forest.print_results(args, cache)
+
+    random_forest.display_results(cache)
 
 
 if __name__ == "__main__":
