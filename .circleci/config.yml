@@ -12,6 +12,12 @@ jobs:
           name: install dependencies
           command: |
             conda env create -f environment.yml
+
+      - run:
+          name: Run linter
+          command: |
+            source activate mnist_classifier
+            pylint --output-format=colorized *.py src/ tests/
       
       - run:
           command: |

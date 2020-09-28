@@ -1,8 +1,12 @@
+"""
+Downloads and prepares the dataset
+"""
+
 import os
-import requests
 import sys
 import gzip
 import struct
+import requests
 import numpy as np
 
 # for debug purposes
@@ -61,9 +65,9 @@ def __check_downloaded(which: str = "train"):
     """
     if which not in ["train", "test"]:
         raise ValueError("download check error, please enter 'train' or 'test'")
-    fp = which + "_data.npy"
-    fp2 = which + "_labels.npy"
-    return os.path.exists(fp) and os.path.exists(fp2)
+    fp_data = which + "_data.npy"
+    fp_labels = which + "_labels.npy"
+    return os.path.exists(fp_data) and os.path.exists(fp_labels)
 
 
 def __download_data(which: str = "train"):
@@ -98,19 +102,19 @@ def __download_data(which: str = "train"):
     return data, labels
 
 
-def __download_show_progress_bar(url, fp):
+def __download_show_progress_bar(url, filep):
     """
     Download utility with progress bar for more aesthetic view of the download
     :param url: the url to download
-    :param fp: the file path to write it to
+    :param filep: the file path to write it to
     """
 
-    with open(fp, "wb") as f:
+    with open(filep, "wb") as file_handler:
         resp = requests.get(url, stream=True)
         size = resp.headers.get("content-length")
         if size is None:
-            f.write(resp.content)
-            f.close()
+            file_handler.write(resp.content)
+            file_handler.close()
             return
 
         dl_chunks = 0
@@ -118,11 +122,11 @@ def __download_show_progress_bar(url, fp):
         size = int(size)
         for data in resp.iter_content(chunk_size=4096):
             dl_chunks += len(data)
-            f.write(data)
+            file_handler.write(data)
             progress = int(chars*dl_chunks / size)
             sys.stdout.write('\r[%a%s%a]' % ('='*(progress-1), '>', ' '*(chars-progress)))
             sys.stdout.flush()
-        f.close()
+        file_handler.close()
         print()
 
 
@@ -141,12 +145,12 @@ def __parse_downloaded(which: str = "train"):
         raise FileNotFoundError(f"Couldn't find the downloaded {which} files! try downloading them again?")
 
     # unzip data and label files
-    with gzip.open(data_fp, 'rb') as f:
-        data = f.read()
-        f.close()
-    with gzip.open(label_fp, "rb") as f:
-        labels = f.read()
-        f.close()
+    with gzip.open(data_fp, 'rb') as file_handler:
+        data = file_handler.read()
+        file_handler.close()
+    with gzip.open(label_fp, "rb") as file_handler:
+        labels = file_handler.read()
+        file_handler.close()
     # remove temp files
     os.unlink(data_fp)
     os.unlink(label_fp)
@@ -163,4 +167,3 @@ def __parse_downloaded(which: str = "train"):
 
     labels = np.frombuffer(labels, dtype='>B', count=num_images, offset=8)
     return (rows, cols), data, labels
-

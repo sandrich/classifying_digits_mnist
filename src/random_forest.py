@@ -1,13 +1,19 @@
+"""
+RandomForest model
+"""
+import os
+import pickle
 from sklearn.ensemble import RandomForestClassifier
 from . import visualizer
 from .algorithm_meta import AlgorithmMeta
-import os
-import pickle
 
 
 class RandomForest(AlgorithmMeta):
+    """
+    RandomForest implementation
+    """
 
-    def __init__(cls, trees, depth, impurity_method):
+    def __init__(self, trees, depth, impurity_method):
         """
         Initiates the model with the correct configurations.
         :param trees:
@@ -15,18 +21,18 @@ class RandomForest(AlgorithmMeta):
         :param impurity_method:
         """
         super().__init__()
-        cls.model = RandomForestClassifier(n_estimators=trees, max_depth=depth, criterion=impurity_method)
-        cls.trees = trees
-        cls.depth = depth
-        cls.impurity_method = impurity_method
+        self.model = RandomForestClassifier(n_estimators=trees, max_depth=depth, criterion=impurity_method)
+        self.trees = trees
+        self.depth = depth
+        self.impurity_method = impurity_method
 
-        if cls.trees < 1:
+        if self.trees < 1:
             raise ValueError('Number of trees have to be greater than 0')
 
-        if cls.depth < 1:
+        if self.depth < 1:
             raise ValueError('Depth of a tree has to be greater than 0')
 
-        if cls.impurity_method not in ['entropy', 'gini']:
+        if self.impurity_method not in ['entropy', 'gini']:
             raise ValueError('Impurity method supported: entropy, gini')
 
     def train(self, samples, labels):
@@ -49,9 +55,9 @@ class RandomForest(AlgorithmMeta):
         self.model.fit(samples, labels)
         print("Done training.")
 
-    def load_model(self, fp):
-        print("Loading model", fp)
-        self.model = pickle.load(open(fp, 'rb'))
+    def load_model(self, filepath):
+        print("Loading model", filepath)
+        self.model = pickle.load(open(filepath, 'rb'))
         if self.model.n_estimators != self.trees:
             print(f"[WARNING] - the model you loaded has {self.model.n_estimators} trees, "
                   f"but you specified {self.trees}! Continuing with loaded model...")
@@ -62,23 +68,23 @@ class RandomForest(AlgorithmMeta):
             print(f"[WARNING] - the model you loaded has an impurity criterion of {self.model.criterion}, "
                   f"but you specified {self.impurity_method}! Continuing with loaded model...")
 
-    def save_model(self, fp):
-        print("Saving model as", fp)
-        pickle.dump(self.model, open(fp, 'wb'))
+    def save_model(self, filepath):
+        print("Saving model as", filepath)
+        pickle.dump(self.model, open(filepath, 'wb'))
 
-    def predict(self, samples):
+    def predict(self, test_data):
         """
         Returns prediction of the class labels for input
 
         :param
             classifier: Class instance with the trained random forest
-            samples: Sample data set
+            test_data: Sample data set
 
         :return
             Array with the predicted class label
         """
         print("Predicting...")
-        return self.model.predict(samples)
+        return self.model.predict(test_data)
 
     def run_classification(self, train_data, train_labels, test_data, test_labels, model_to_save=None, model_to_load=None):
         """

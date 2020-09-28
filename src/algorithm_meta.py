@@ -1,14 +1,20 @@
-from numpy import sum
+"""
+Algorithm class
+"""
+from numpy import sum as npsum
 
 
-class AlgorithmMeta(object):
+class AlgorithmMeta():
+    """
+    AlogirthmMeta class
+    """
 
     @staticmethod
-    def accuracy(labels, pred, show=False):
+    def accuracy(labels, pred):
         """
         Returns accuracy given prediction and labels
         """
-        return sum(pred == labels) / len(labels)
+        return npsum(pred == labels) / len(labels)
 
     def train(self, samples, labels):
         """
@@ -17,7 +23,6 @@ class AlgorithmMeta(object):
         :param labels:
         :return:
         """
-        pass
 
     def predict(self, test_data):
         """
@@ -25,22 +30,19 @@ class AlgorithmMeta(object):
         :param test_data: the data to predict the output
         :return:
         """
-        pass
 
-    def load_model(self, fp):
+    def load_model(self, filepath):
         """
         Loads its model from the desired filepath
-        :param fp: the filepath of the model to load
+        :param filepath: the filepath of the model to load
         :return:
         """
-        pass
 
-    def save_model(self, fp):
+    def save_model(self, filepath):
         """
         Saves the trained model to the desired filepath
-        :param fp: the filepath
+        :param filepath: the filepath
         """
-        pass
 
     def print_results(self, cache):
         """
@@ -48,7 +50,6 @@ class AlgorithmMeta(object):
         :param cache: the arguments to print out (varies from algorithm to algorithm)
         :return:
         """
-        pass
 
     def display_results(self, cache):
         """
@@ -75,4 +76,3 @@ class AlgorithmMeta(object):
         :param model_to_load: the location where to save the model
         :return:
         """
-        pass
