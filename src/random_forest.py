@@ -1,11 +1,17 @@
+"""
+RandomForest model
+"""
+import os
+import pickle
 from sklearn.ensemble import RandomForestClassifier
 from . import visualizer
 from .algorithm_meta import AlgorithmMeta
-import os
-import pickle
 
 
 class RandomForest(AlgorithmMeta):
+    """
+    RandomForest implementation
+    """
 
     def __init__(self, trees, depth, impurity_method):
         """

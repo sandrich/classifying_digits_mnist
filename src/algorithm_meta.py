@@ -1,3 +1,6 @@
+"""
+Algorithm class
+"""
 from numpy import sum
 from sklearn.base import BaseEstimator, ClassifierMixin
 import pickle
@@ -5,10 +8,6 @@ import pickle
 
 class AlgorithmMeta(BaseEstimator, ClassifierMixin):
 
-    # @staticmethod
-    # def accuracy(labels, pred, show=False):
-    #     """Returns accuracy given prediction and y"""
-    #     return sum(pred == labels) / len(labels)
 
     def __init__(self):
         self.model = None
@@ -19,7 +18,6 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         :param targets: the output class of the given data
         :return:
         """
-        pass
 
     def predict(self, X):
         """
@@ -27,13 +25,12 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         :param X: the data to predict the output
         :return:
         """
-        pass
 
-    def load_model(self, fp):
+    def load_model(self, filepath):
         print("Loading model", fp)
         self.model = pickle.load(open(fp, 'rb'))
 
-    def save_model(self, fp):
+    def save_model(self, filepath):
         print("Saving model as", fp)
         pickle.dump(self.model, open(fp, 'wb'))
 
@@ -44,7 +41,6 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         :param cache: the arguments to print out (varies from algorithm to algorithm)
         :return:
         """
-        pass
 
     def display_results(self, cache):
         """
@@ -71,4 +67,3 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         :param model_to_load: the location where to save the model
         :return:
         """
-        pass

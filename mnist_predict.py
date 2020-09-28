@@ -1,9 +1,17 @@
+"""
+Entry point script
+"""
+import argparse
+import sys
 from src import dataset
 from src.random_forest import  RandomForest
-import argparse
+
 
 
 def main():
+    """
+    Main function
+    """
     parser = argparse.ArgumentParser(description='Run MNIST classifier')
     parser.add_argument('--trees', type=int, help='Number of trees', default=20)
     parser.add_argument('--depth', type=int, help='Maximum tree depth', default=9)
@@ -14,7 +22,7 @@ def main():
     args = parser.parse_args()
     if args.save_RF is not None and args.load_RF is not None:
         print("Can't load and save a model at the same time... please choose just one of the two options")
-        exit(0)
+        sys.exit(1)
 
     # Load dataset
     train_data, train_labels = dataset.load_train_data()

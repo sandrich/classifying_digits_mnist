@@ -1,3 +1,6 @@
+"""
+Visualizer
+"""
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 from matplotlib import pyplot as plt
 
@@ -10,8 +13,8 @@ def display_confusion_matrix(actual_y, predicted_y, show=True, axes=None):
     :param axes: the matplotlib axes to plot on
     :return:
     """
-    cm = ConfusionMatrixDisplay(confusion_matrix(actual_y, predicted_y))
-    cm.plot(cmap="Blues", ax=axes)
+    cmd = ConfusionMatrixDisplay(confusion_matrix(actual_y, predicted_y))
+    cmd.plot(cmap="Blues", ax=axes)
 
     if show:
         plt.show()
