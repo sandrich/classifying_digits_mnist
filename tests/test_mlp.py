@@ -25,8 +25,12 @@ class MyTestCase(unittest.TestCase):
             _ = MLP(batch_size="test")
 
     def test_no_errors(self):
-        _ = MLP()  # using all the default values
-        self.assertTrue(True)
+        raised = False
+        try:
+            _ = MLP()  # using all the default values
+        except ValueError as e:
+            raised = True
+        self.assertFalse(raised)
 
 
 if __name__ == '__main__':

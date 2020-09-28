@@ -1,3 +1,6 @@
+"""
+MLP Classifier class
+"""
 from sklearn.neural_network import MLPClassifier
 from .algorithm_meta import AlgorithmMeta
 from . import visualizer
@@ -29,7 +32,7 @@ class MLP(AlgorithmMeta):
             raise ValueError("You need at least one training iteration!")
         if batch_size != "auto" and not isinstance(batch_size, int):
             raise ValueError("batch size must either be an integer value or 'auto'!")
-        elif isinstance(batch_size, int) and batch_size <= 0:
+        if isinstance(batch_size, int) and batch_size <= 0:
             raise ValueError("batch size must be positive!")
 
         self.hidden_layers = hidden_layer_sizes
@@ -40,7 +43,8 @@ class MLP(AlgorithmMeta):
             hidden_layer_sizes=hidden_layer_sizes,
             alpha=alpha,
             batch_size=batch_size,
-            max_iter=max_iter)
+            max_iter=max_iter,
+            verbose=True)
 
     def load_model(self, filepath):
         super().load_model(filepath)
@@ -56,4 +60,5 @@ class MLP(AlgorithmMeta):
 
     def display_results(self, cache):
         visualizer.display_train_test_matrices(cache)
-        print()
+        visualizer.display_loss_curve(self.model.loss_curve_)
+        visualizer.display_mlp_coefficients(self.model.coefs_)

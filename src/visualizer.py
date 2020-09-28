@@ -48,3 +48,40 @@ def display_rf_feature_importance(cache):
     plt.imshow(cache['model'].feature_importances_.reshape((28,28)), extent=[0,28,28,0])
     plt.colorbar()
     plt.show()
+
+
+def display_loss_curve(losses):
+    """
+    Plots and displays the loss curve (usually for Neural Network models)
+    :param losses: 1D numpy array
+    :return:
+    """
+    plt.plot(losses)
+    plt.xlabel("Iteration")
+    plt.ylabel("Loss")
+    plt.show()
+
+
+def display_mlp_coefficients(coefficients, rows=4, cols=4):
+    """
+    Shows the first layer's coefficients of the input layer
+
+    The first rows*cols neurons' coefficients are displayed. if rows*cols is greater than the number of neurons, all the
+    neurons are displayed
+    :param coefficients: 2D array, the network's coefficients
+    :param rows: int, the number of rows to display
+    :param cols: int, the number of columns to display
+    :return:
+    """
+    coefficients = coefficients[0]
+    coefficients -= min(coefficients.ravel())
+    coefficients /= max(coefficients.ravel())
+
+    for pos in range(rows*cols):
+        if coefficients.shape[1] <= pos:
+            continue
+        plt.subplot(rows, cols, pos+1)
+        plt.imshow(coefficients[:, pos].reshape(28, 28), cmap="gray")
+        plt.xticks(())
+        plt.yticks(())
+    plt.show()

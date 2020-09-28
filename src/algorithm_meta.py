@@ -14,7 +14,6 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
 
     def __init__(self):
         self.model = None
-        self.train_time = 0
 
     def _check_loaded_model_and_set_conf(self, props: list):
         """
@@ -46,9 +45,9 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         """
 
         print(f"Starting training {self.__class__.__name__}...")
-        ts = time.time()
+        time_start = time.time()
         self.model.fit(data, targets)
-        self.train_time = time.time() - ts
+        self.model.train_time = time.time() - time_start
         print("Done training.")
         return self.model
 
@@ -93,7 +92,7 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         print('-----------------')
         print('Train Accuracy: {0:.3f}'.format(cache['accuracy']['train']))
         print('Test  Accuracy: {0:.3f}'.format(cache['accuracy']['test']))
-        print('Training time : {0:.2f}s'.format(self.train_time))
+        print('Training time : {0:.2f}s'.format(self.model.train_time))
 
     def display_results(self, cache):
         """

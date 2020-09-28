@@ -30,7 +30,10 @@ def main():
     parser.add_argument('--alpha', type=float, help="the alpha bias of the MLP", default=0.0001)
     parser.add_argument('--batch_size', help="The batch size of training. you can specify a number or 'auto'",
                         default='auto')
-    parser.add_argument('--max_iter', type=int, help="The number of maximum training iterations to perform", default=200)
+    parser.add_argument('--max_iter', type=int,
+                        help="The number of maximum training iterations to perform", default=200)
+    parser.add_argument('--verbose_MLP',
+                        help="Show training iterations with losses while training", action="store_true")
     parser.add_argument('--save_MLP', help="Saves the trained MLP model to disk", default=None)
     parser.add_argument('--load_MLP', help="Loads a trained MLP model from disk", default=None)
 

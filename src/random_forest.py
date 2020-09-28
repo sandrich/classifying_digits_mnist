@@ -1,7 +1,6 @@
 """
 RandomForest model
 """
-import os
 from sklearn.ensemble import RandomForestClassifier
 from . import visualizer
 from .algorithm_meta import AlgorithmMeta
