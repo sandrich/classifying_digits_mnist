@@ -11,3 +11,4 @@ dependencies:
   - python-dateutil=2.8.1
   - pillow=7.2.0
   - coverage=5.3
+  - pylint=2.6.0
