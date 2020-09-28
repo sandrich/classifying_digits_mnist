@@ -1,7 +1,6 @@
 """
 Algorithm class
 """
-from numpy import sum
 from sklearn.base import BaseEstimator, ClassifierMixin
 import pickle
 
@@ -27,13 +26,12 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         """
 
     def load_model(self, filepath):
-        print("Loading model", fp)
-        self.model = pickle.load(open(fp, 'rb'))
+        print("Loading model", filepath)
+        self.model = pickle.load(open(filepath, 'rb'))
 
     def save_model(self, filepath):
-        print("Saving model as", fp)
-        pickle.dump(self.model, open(fp, 'wb'))
-
+        print("Saving model as", filepath)
+        pickle.dump(self.model, open(filepath, 'wb'))
 
     def print_results(self, cache):
         """
