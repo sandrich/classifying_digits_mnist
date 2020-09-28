@@ -11,7 +11,7 @@ class MLP(AlgorithmMeta):
     A basic MLP classifier
     """
 
-    def __init__(self, hidden_layer_sizes: tuple = (100,), alpha: float = 0.0001,
+    def __init__(self, hidden_layer_sizes: tuple = (10, 10, 10), alpha: float = 0.0001,
                  batch_size='auto', max_iter: int = 200):
         """
         Initializes the MLP model
@@ -44,7 +44,8 @@ class MLP(AlgorithmMeta):
             alpha=alpha,
             batch_size=batch_size,
             max_iter=max_iter,
-            verbose=True)
+            verbose=True,
+            random_state=12345)  # static random seed
 
     def load_model(self, filepath):
         super().load_model(filepath)

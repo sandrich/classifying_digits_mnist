@@ -9,6 +9,7 @@ from src import dataset
 
 sys.path.append('..')
 
+
 def load_data_and_cleanup(which: str = "train"):
     """
     Loads data and cleansup the downloaded artefacts

@@ -101,8 +101,35 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         :return:
         """
 
-    def run_classification(self, train_data, train_labels,
-                           test_data, test_labels,
+    def eval_train_test_cache(self, train_data, train_labels,
+                              test_data, test_labels):
+        """
+        Generates a cache object containing the test and test data, labels, and accuracies, and a copy of the model.
+        :param train_data:
+        :param train_labels:
+        :param test_data:
+        :param test_labels:
+        :return:
+        """
+        train_pred = self.predict(train_data)
+        test_pred = self.predict(test_data)
+
+        train_acc = self.score(train_data, train_labels)  # score() inherited from sklearn.base.ClassifierMixin
+        test_acc = self.score(test_data, test_labels)
+
+        return {
+            'prediction': {
+                'train': train_pred,
+                'test': test_pred
+            }, 'accuracy': {
+                'train': train_acc,
+                'test': test_acc
+            }, 'actual': {
+                'train': train_labels,
+                'test': test_labels
+            }, 'model': self.model}
+
+    def run_classification(self, train_data, train_labels, test_data, test_labels,
                            model_to_save=None, model_to_load=None):
         """
         Trains and tests the classification
@@ -136,23 +163,7 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         if model_to_save is not None:
             self.save_model(model_to_save)
 
-        train_pred = self.predict(train_data)
-        test_pred = self.predict(test_data)
-
-        train_acc = self.score(train_data, train_labels)  # score() inherited from sklearn.base.ClassifierMixin
-        test_acc = self.score(test_data, test_labels)
-
-        cache = {
-            'prediction': {
-                'train': train_pred,
-                'test': test_pred
-            }, 'accuracy': {
-                'train': train_acc,
-                'test': test_acc
-            }, 'actual': {
-                'train': train_labels,
-                'test': test_labels
-            }, 'model': self.model}
+        cache = self.eval_train_test_cache(train_data, train_labels, test_data, test_labels)
 
         self.print_results(cache)
         self.display_results(cache)
