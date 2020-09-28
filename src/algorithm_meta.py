@@ -1,14 +1,14 @@
-from numpy import sum
-from sklearn.base import BaseEstimator, ClassifierMixin
+"""
+Algorithm class
+"""
 import pickle
+from sklearn.base import BaseEstimator, ClassifierMixin
 
 
 class AlgorithmMeta(BaseEstimator, ClassifierMixin):
-
-    # @staticmethod
-    # def accuracy(labels, pred, show=False):
-    #     """Returns accuracy given prediction and y"""
-    #     return sum(pred == labels) / len(labels)
+    """
+    The Algorithm parent class which contains all the basic algorithm methods
+    """
 
     def __init__(self):
         self.model = None
@@ -19,24 +19,31 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         :param targets: the output class of the given data
         :return:
         """
-        pass
 
-    def predict(self, X):
+    def predict(self, data_to_predict):
         """
         Uses the internally trained model to predict the output of some data
-        :param X: the data to predict the output
+        :param data_to_predict: the data to predict the output
         :return:
         """
-        pass
 
-    def load_model(self, fp):
-        print("Loading model", fp)
-        self.model = pickle.load(open(fp, 'rb'))
+    def load_model(self, filepath):
+        """
+        Loads the model from disk into the object's `model` attribute
+        :param filepath: the path of the model on disk
+        :return:
+        """
+        print("Loading model", filepath)
+        self.model = pickle.load(open(filepath, 'rb'))
 
-    def save_model(self, fp):
-        print("Saving model as", fp)
-        pickle.dump(self.model, open(fp, 'wb'))
-
+    def save_model(self, filepath):
+        """
+        Saves the trained `model` attribute to disk
+        :param filepath: the destination filepath to save to disk to.
+        :return:
+        """
+        print("Saving model as", filepath)
+        pickle.dump(self.model, open(filepath, 'wb'))
 
     def print_results(self, cache):
         """
@@ -44,7 +51,6 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         :param cache: the arguments to print out (varies from algorithm to algorithm)
         :return:
         """
-        pass
 
     def display_results(self, cache):
         """
@@ -71,4 +77,3 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         :param model_to_load: the location where to save the model
         :return:
         """
-        pass

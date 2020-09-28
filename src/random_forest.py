@@ -1,11 +1,16 @@
+"""
+RandomForest model
+"""
+import os
 from sklearn.ensemble import RandomForestClassifier
 from . import visualizer
 from .algorithm_meta import AlgorithmMeta
-import os
-import pickle
 
 
 class RandomForest(AlgorithmMeta):
+    """
+    RandomForest implementation
+    """
 
     def __init__(self, trees, depth, impurity_method):
         """
@@ -14,7 +19,7 @@ class RandomForest(AlgorithmMeta):
         :param depth:
         :param impurity_method:
         """
-        super(AlgorithmMeta, self).__init__()
+        super().__init__()
         self.model = RandomForestClassifier(n_estimators=trees, max_depth=depth, criterion=impurity_method)
         self.trees = trees
         self.depth = depth
@@ -29,39 +34,34 @@ class RandomForest(AlgorithmMeta):
         if self.impurity_method not in ['entropy', 'gini']:
             raise ValueError('Impurity method supported: entropy, gini')
 
-    def fit(self, X, y):
-        """
-        This function trains the dataset using RandomForest algorithm
-
-        :param
-            X: Dataset with X
-            y: Labels matching the dataset
-
-        :return
-            Returns fit instance for further processing
+    def fit(self, data, targets):
+        """ Fits the internal model on the given data
+        :param data: the data to fit the model on
+        :param targets: the output class of the given data
+        :return:
         """
 
         print("Starting training...")
-        self.model.fit(X, y)
+        self.model.fit(data, targets)
         print("Done training.")
         return self.model
 
-    def predict(self, X):
+    def predict(self, data_to_predict):
         """
         Returns prediction of the class y for input
 
         :param
             classifier: Class instance with the trained random forest
-            X: Sample data set
+            data_to_predict: Sample data set
 
         :return
             Array with the predicted class label
         """
         print("Predicting...")
-        return self.model.predict(X)
+        return self.model.predict(data_to_predict)
 
-    def load_model(self, fp):
-        super().load_model(fp)
+    def load_model(self, filepath):
+        super().load_model(filepath)
         if self.model.n_estimators != self.trees:
             print(f"[WARNING] - the model you loaded has {self.model.n_estimators} trees, "
                   f"but you specified {self.trees}! Continuing with loaded model...")
