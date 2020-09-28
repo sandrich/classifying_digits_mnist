@@ -4,6 +4,7 @@ Testing the app
 import unittest
 from src.random_forest import RandomForest
 
+
 class TestApp(unittest.TestCase):
     """
     Testing the app
@@ -13,10 +14,10 @@ class TestApp(unittest.TestCase):
         Tests around training the model
         """
         with self.assertRaises(ValueError):
-            _ = RandomForest(trees=0, depth=1, impurity_method='entropy')
+            _ = RandomForest(n_estimators=0, max_depth=1, criterion='entropy')
 
         with self.assertRaises(ValueError):
-            _ = RandomForest(trees=1, depth=0, impurity_method='entropy')
+            _ = RandomForest(n_estimators=1, max_depth=0, criterion='entropy')
 
         with self.assertRaises(ValueError):
-            _ = RandomForest(trees=1, depth=1, impurity_method='test')
+            _ = RandomForest(n_estimators=1, max_depth=1, criterion='test')
