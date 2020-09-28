@@ -7,88 +7,84 @@ import pickle
 
 class RandomForest(AlgorithmMeta):
 
-    def __init__(cls, trees, depth, impurity_method):
+    def __init__(self, trees, depth, impurity_method):
         """
         Initiates the model with the correct configurations.
         :param trees:
         :param depth:
         :param impurity_method:
         """
-        super().__init__()
-        cls.model = RandomForestClassifier(n_estimators=trees, max_depth=depth, criterion=impurity_method)
-        cls.trees = trees
-        cls.depth = depth
-        cls.impurity_method = impurity_method
+        super(AlgorithmMeta, self).__init__()
+        self.model = RandomForestClassifier(n_estimators=trees, max_depth=depth, criterion=impurity_method)
+        self.trees = trees
+        self.depth = depth
+        self.impurity_method = impurity_method
 
-        if cls.trees < 1:
+        if self.trees < 1:
             raise ValueError('Number of trees have to be greater than 0')
 
-        if cls.depth < 1:
+        if self.depth < 1:
             raise ValueError('Depth of a tree has to be greater than 0')
 
-        if cls.impurity_method not in ['entropy', 'gini']:
+        if self.impurity_method not in ['entropy', 'gini']:
             raise ValueError('Impurity method supported: entropy, gini')
 
-    def train(self, samples, labels):
+    def fit(self, X, y):
         """
         This function trains the dataset using RandomForest algorithm
 
         :param
-            samples: Dataset with samples
-            labels: Labels matching the dataset
-            trees: Number of trees
-            depth: Maximum tree depth
-            impurity_method: Impurity node method used (Entropy, Gini)
-            save_model: whether to save the model to disk or not
+            X: Dataset with X
+            y: Labels matching the dataset
 
         :return
-            Returns train instance for further processing
+            Returns fit instance for further processing
         """
 
         print("Starting training...")
-        self.model.fit(samples, labels)
+        self.model.fit(X, y)
         print("Done training.")
+        return self.model
 
-    def load_model(self, fp):
-        print("Loading model", fp)
-        self.model = pickle.load(open(fp, 'rb'))
-        if self.model.n_estimators != self.trees:
-            print(f"[WARNING] - the model you loaded has {self.model.n_estimators} trees, "
-                  f"but you specified {self.trees}! Continuing with loaded model...")
-        if self.model.max_depth != self.depth:
-            print(f"[WARNING] - the model you loaded has a max depth of {self.model.depth}, "
-                  f"but you specified {self.depth}! Continuing with loaded model...")
-        if self.model.criterion != self.impurity_method:
-            print(f"[WARNING] - the model you loaded has an impurity criterion of {self.model.criterion}, "
-                  f"but you specified {self.impurity_method}! Continuing with loaded model...")
-
-    def save_model(self, fp):
-        print("Saving model as", fp)
-        pickle.dump(self.model, open(fp, 'wb'))
-
-    def predict(self, samples):
+    def predict(self, X):
         """
-        Returns prediction of the class labels for input
+        Returns prediction of the class y for input
 
         :param
             classifier: Class instance with the trained random forest
-            samples: Sample data set
+            X: Sample data set
 
         :return
             Array with the predicted class label
         """
         print("Predicting...")
-        return self.model.predict(samples)
+        return self.model.predict(X)
 
-    def run_classification(self, train_data, train_labels, test_data, test_labels, model_to_save=None, model_to_load=None):
+    def load_model(self, fp):
+        super().load_model(fp)
+        if self.model.n_estimators != self.trees:
+            print(f"[WARNING] - the model you loaded has {self.model.n_estimators} trees, "
+                  f"but you specified {self.trees}! Continuing with loaded model...")
+
+        if self.model.max_depth != self.depth:
+            print(f"[WARNING] - the model you loaded has a max depth of {self.model.depth}, "
+                  f"but you specified {self.depth}! Continuing with loaded model...")
+
+        if self.model.criterion != self.impurity_method:
+            print(f"[WARNING] - the model you loaded has an impurity criterion of {self.model.criterion}, "
+                  f"but you specified {self.impurity_method}! Continuing with loaded model...")
+
+    def run_classification(self, train_data, train_labels,
+                           test_data, test_labels,
+                           model_to_save=None, model_to_load=None):
         """
         Trains and tests the classification
 
         :param
             train_data: Train sample set
-            train_labels: Train labels
-            test_data: Test data set
-            test_labels: Test labels
+            train_labels: Train y
+            X: Test data set
+            test_labels: Test y
             save_model: filepath to save the trained model
             model_to_load: filepath of saved model to load instead of training
 
@@ -97,10 +93,10 @@ class RandomForest(AlgorithmMeta):
             Returns collection with prediction and accuracy
             cache:
                 prediction:
-                    train: float
+                    fit: float
                     test: float
                 accuracy:
-                    train: float
+                    fit: float
                     test: float
         """
         if model_to_load is not None and os.path.exists(model_to_load):
@@ -108,7 +104,7 @@ class RandomForest(AlgorithmMeta):
         else:
             if model_to_load is not None:
                 print(f"Could not find the model {model_to_load}... training a new model.")
-            self.train(train_data, train_labels)
+            self.fit(train_data, train_labels)
 
         if model_to_save is not None:
             self.save_model(model_to_save)
@@ -116,8 +112,8 @@ class RandomForest(AlgorithmMeta):
         train_pred = self.predict(train_data)
         test_pred = self.predict(test_data)
 
-        train_acc = AlgorithmMeta.accuracy(train_labels, train_pred)
-        test_acc = AlgorithmMeta.accuracy(test_labels, test_pred)
+        train_acc = self.score(train_data, train_labels)  # score() inherited from sklearn.base.ClassifierMixin
+        test_acc = self.score(test_data, test_labels)
 
         cache = {
             'prediction': {

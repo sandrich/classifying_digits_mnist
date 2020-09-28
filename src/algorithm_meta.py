@@ -1,46 +1,42 @@
 from numpy import sum
+from sklearn.base import BaseEstimator, ClassifierMixin
+import pickle
 
 
-class AlgorithmMeta(object):
+class AlgorithmMeta(BaseEstimator, ClassifierMixin):
 
-    @staticmethod
-    def accuracy(labels, pred, show=False):
-        """
-        Returns accuracy given prediction and labels
-        """
-        return sum(pred == labels) / len(labels)
+    # @staticmethod
+    # def accuracy(labels, pred, show=False):
+    #     """Returns accuracy given prediction and y"""
+    #     return sum(pred == labels) / len(labels)
 
-    def train(self, samples, labels):
-        """
-        Trains the internal model on the given data
-        :param samples:
-        :param labels:
+    def __init__(self):
+        self.model = None
+
+    def fit(self, data, targets):
+        """ Fits the internal model on the given data
+        :param data: the data to fit the model on
+        :param targets: the output class of the given data
         :return:
         """
         pass
 
-    def predict(self, test_data):
+    def predict(self, X):
         """
         Uses the internally trained model to predict the output of some data
-        :param test_data: the data to predict the output
+        :param X: the data to predict the output
         :return:
         """
         pass
 
     def load_model(self, fp):
-        """
-        Loads its model from the desired filepath
-        :param fp: the filepath of the model to load
-        :return:
-        """
-        pass
+        print("Loading model", fp)
+        self.model = pickle.load(open(fp, 'rb'))
 
     def save_model(self, fp):
-        """
-        Saves the trained model to the desired filepath
-        :param fp: the filepath
-        """
-        pass
+        print("Saving model as", fp)
+        pickle.dump(self.model, open(fp, 'wb'))
+
 
     def print_results(self, cache):
         """
@@ -61,7 +57,7 @@ class AlgorithmMeta(object):
                            model_to_load=None):
         """
         A one-hit method to run everything in one go. This method can:
-         - train or load a model from disk
+         - fit or load a model from disk
          - test that model on some data
          - save the model to disk
          - print the results
