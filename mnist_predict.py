@@ -47,11 +47,11 @@ def main():
         sys.exit(1)
 
     hidden_layers = []
-    for n in args.hidden_layers:
+    for layer in args.hidden_layers:
         try:
-            hidden_layers.append(int(n))
+            hidden_layers.append(int(layer))
         except ValueError:
-            print(f"Can't set a hidden layer value of {n}. Please enter an integer value")
+            print(f"Can't set a hidden layer value of {layer}. Please enter an integer value")
             sys.exit(1)
     args.hidden_layers = tuple(hidden_layers)
 
