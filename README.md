@@ -49,10 +49,10 @@ optional arguments:
 
 ```bash
 # python mnist_predict.py 
-No local train dataset found.
-Downloading train data
+No local fit dataset found.
+Downloading fit data
 ['================================================='>'']]
-Downloading train labels
+Downloading fit labels
 ['================================================='>'']
 No local test dataset found.
 Downloading test data
