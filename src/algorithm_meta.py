@@ -1,12 +1,14 @@
 """
 Algorithm class
 """
-from sklearn.base import BaseEstimator, ClassifierMixin
 import pickle
+from sklearn.base import BaseEstimator, ClassifierMixin
 
 
 class AlgorithmMeta(BaseEstimator, ClassifierMixin):
-
+    """
+    The Algorithm parent class which contains all the basic algorithm methods
+    """
 
     def __init__(self):
         self.model = None
@@ -18,18 +20,28 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         :return:
         """
 
-    def predict(self, X):
+    def predict(self, data_to_predict):
         """
         Uses the internally trained model to predict the output of some data
-        :param X: the data to predict the output
+        :param data_to_predict: the data to predict the output
         :return:
         """
 
     def load_model(self, filepath):
+        """
+        Loads the model from disk into the object's `model` attribute
+        :param filepath: the path of the model on disk
+        :return:
+        """
         print("Loading model", filepath)
         self.model = pickle.load(open(filepath, 'rb'))
 
     def save_model(self, filepath):
+        """
+        Saves the trained `model` attribute to disk
+        :param filepath: the destination filepath to save to disk to.
+        :return:
+        """
         print("Saving model as", filepath)
         pickle.dump(self.model, open(filepath, 'wb'))
 

@@ -46,19 +46,19 @@ class RandomForest(AlgorithmMeta):
         print("Done training.")
         return self.model
 
-    def predict(self, X):
+    def predict(self, data_to_predict):
         """
         Returns prediction of the class y for input
 
         :param
             classifier: Class instance with the trained random forest
-            X: Sample data set
+            data_to_predict: Sample data set
 
         :return
             Array with the predicted class label
         """
         print("Predicting...")
-        return self.model.predict(X)
+        return self.model.predict(data_to_predict)
 
     def load_model(self, filepath):
         super().load_model(filepath)
