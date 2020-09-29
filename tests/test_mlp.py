@@ -31,6 +31,7 @@ class MLPTestCase(unittest.TestCase):
             os.remove("tests/exp_cache.pkl")
 
     def set_up_trained_model(self, save_cache=False, save_model=False):
+        """Runs a quick training of the model in case it is needed. can also save the model or the output"""
         self.test_model.fit(self.train_data, self.train_labels)
         if save_cache:
             # Save this to an output, will be used for future tests.
