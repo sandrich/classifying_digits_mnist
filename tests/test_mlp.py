@@ -26,34 +26,39 @@ class MLPTestCase(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        os.remove("tests/mlp.model")
-        os.remove("tests/exp_cache.pkl")
+        if os.path.exists("test/mlp.model"):
+            os.remove("tests/mlp.model")
+        if os.path.exists("tests/exp_cache.pkl"):
+            os.remove("tests/exp_cache.pkl")
 
-    @pytest.mark.first
-    @pytest.mark.order1
-    def test_training(self):
-        """Test training with no errors (run first)"""
-        raised = False
-        try:
-            self.test_model.fit(self.train_data, self.train_labels)
-
+    def set_up_trained_model(self, save_cache=False, save_model=False):
+        self.test_model.fit(self.train_data, self.train_labels)
+        if save_cache:
             # Save this to an output, will be used for future tests.
             with open("tests/exp_cache.pkl", "wb") as pickle_dump:
                 pickle.dump(self.test_model.eval_train_test_cache(
                     self.train_data, self.train_labels, self.test_data, self.test_labels
                 ), pickle_dump)
                 pickle_dump.close()
+
+        if save_model:
+            self.test_model.save_model("tests/mlp.model")
+
+    def test_training(self):
+        """Test training with no errors (run first)"""
+        raised = False
+        try:
+            self.test_model.fit(self.train_data, self.train_labels)
         except Exception as error:
             raised = True
             print(error)
         self.assertFalse(raised)
 
-    @pytest.mark.second
-    @pytest.mark.order2
     def test_save_model(self):
         """Test if saving the model works without errors"""
         raised = False
         try:
+            self.set_up_trained_model()
             self.test_model.save_model('tests/mlp.model')
         except Exception as error:
             print(error)
@@ -101,11 +106,13 @@ class MLPTestCase(unittest.TestCase):
 
     def test_accuracy(self):
         """Test accuracy of predictions"""
+        self.set_up_trained_model()
         accuracy = self.test_model.score(self.test_data, self.test_labels)
         self.assertEqual(accuracy, 0.5)
 
     def test_print_results(self):
         """Testing the printed results"""
+        self.set_up_trained_model(save_cache=True)
         old_stdout = sys.stdout
         sys.stdout = my_stdout = StringIO()
         self.test_model.print_results(pickle.load(open("tests/exp_cache.pkl", "rb")))
@@ -123,9 +130,9 @@ class MLPTestCase(unittest.TestCase):
                           "Batch size: auto\n"
                           "Max training iterations: 20\n".format(self.test_model.model.train_time))
 
-    @pytest.mark.last
     def test_loaded_model(self):
         """Test if loading the model works and gives the same predictions as before."""
+        self.set_up_trained_model(save_model=True)
         self.test_model.load_model("tests/mlp.model")
         numpy.testing.assert_almost_equal(self.test_model.predict(self.test_data), [2, 8, 2, 3, 7, 6, 1, 1, 9, 1])
 
