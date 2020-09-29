@@ -12,3 +12,4 @@ dependencies:
   - pillow=7.2.0
   - coverage=5.3
   - pylint=2.6.0
+  - pip==20.2.2

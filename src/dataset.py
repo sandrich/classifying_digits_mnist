@@ -102,14 +102,14 @@ def __download_data(which: str = "train"):
     return data, labels
 
 
-def __download_show_progress_bar(url, filep):
+def __download_show_progress_bar(url, filepath):
     """
     Download utility with progress bar for more aesthetic view of the download
     :param url: the url to download
-    :param filep: the file path to write it to
+    :param filepath: the file path to write it to
     """
 
-    with open(filep, "wb") as file_handler:
+    with open(filepath, "wb") as file_handler:
         resp = requests.get(url, stream=True)
         size = resp.headers.get("content-length")
         if size is None:
@@ -131,8 +131,10 @@ def __download_show_progress_bar(url, filep):
 
 
 def __parse_downloaded(which: str = "train"):
-    """
-    Parses the downloaded gzip files downloaded from the __download_data() function, explained on http://yann.lecun.com/exdb/mnist/
+    """Parses the downloaded gzip files downloaded from the __download_data() function.
+
+    The exact data types are explained on http://yann.lecun.com/exdb/mnist/
+
     :param which: which datasets to parse, should be either "train" or "test"
     :return:
         dims : a tuple of the dimensions of each pixel images (row, col)
