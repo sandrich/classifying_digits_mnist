@@ -13,3 +13,7 @@ dependencies:
   - pillow=7.2.0
   - coverage=5.3
   - pylint=2.6.0
+  - pip==20.2.2
+  - pip:
+    - pytest-dependency==0.5.1
+    - pytest-ordering==0.6
