@@ -29,6 +29,37 @@ class MLPTestCase(unittest.TestCase):
         os.remove("tests/mlp.model")
         os.remove("tests/exp_cache.pkl")
 
+    @pytest.mark.first
+    @pytest.mark.order1
+    def test_training(self):
+        """Test training with no errors (run first)"""
+        raised = False
+        try:
+            self.test_model.fit(self.train_data, self.train_labels)
+
+            # Save this to an output, will be used for future tests.
+            with open("tests/exp_cache.pkl", "wb") as pickle_dump:
+                pickle.dump(self.test_model.eval_train_test_cache(
+                    self.train_data, self.train_labels, self.test_data, self.test_labels
+                ), pickle_dump)
+                pickle_dump.close()
+        except Exception as error:
+            raised = True
+            print(error)
+        self.assertFalse(raised)
+
+    @pytest.mark.second
+    @pytest.mark.order2
+    def test_save_model(self):
+        """Test if saving the model works without errors"""
+        raised = False
+        try:
+            self.test_model.save_model('tests/mlp.model')
+        except Exception as error:
+            print(error)
+            raised = True
+        self.assertFalse(raised)
+
     def test_hidden_layer_empty(self):
         """Test empty hidden layer config"""
         with self.assertRaises(ValueError):
@@ -63,21 +94,6 @@ class MLPTestCase(unittest.TestCase):
             raised = True
         self.assertFalse(raised)
 
-    @pytest.mark.first
-    def test_training(self):
-        """Test training with no errors (run first)"""
-        raised = False
-        try:
-            self.test_model.fit(self.train_data, self.train_labels)
-
-            pickle.dump(self.test_model.eval_train_test_cache(
-                self.train_data, self.train_labels, self.test_data, self.test_labels
-            ), open("tests/exp_cache.pkl", "wb"))
-        except Exception as error:
-            raised = True
-            print(error)
-        self.assertFalse(raised)
-
     def test_predictions(self):
         """test predictions (it's bad, but we don't care)"""
         predictions = self.test_model.predict(self.test_data)
@@ -87,23 +103,6 @@ class MLPTestCase(unittest.TestCase):
         """Test accuracy of predictions"""
         accuracy = self.test_model.score(self.test_data, self.test_labels)
         self.assertEqual(accuracy, 0.5)
-
-    @pytest.mark.second
-    def test_save_model(self):
-        """Test if saving the model works without errors"""
-        raised = False
-        try:
-            self.test_model.save_model('tests/mlp.model')
-        except Exception as error:
-            print(error)
-            raised = True
-        self.assertFalse(raised)
-
-    @pytest.mark.last
-    def test_loaded_model(self):
-        """Test if loading the model works and gives the same predictions as before."""
-        self.test_model.load_model("tests/mlp.model")
-        numpy.testing.assert_almost_equal(self.test_model.predict(self.test_data), [2, 8, 2, 3, 7, 6, 1, 1, 9, 1])
 
     def test_print_results(self):
         """Testing the printed results"""
@@ -123,6 +122,12 @@ class MLPTestCase(unittest.TestCase):
                           "Alpha: 0.0001\n"
                           "Batch size: auto\n"
                           "Max training iterations: 20\n".format(self.test_model.model.train_time))
+
+    @pytest.mark.last
+    def test_loaded_model(self):
+        """Test if loading the model works and gives the same predictions as before."""
+        self.test_model.load_model("tests/mlp.model")
+        numpy.testing.assert_almost_equal(self.test_model.predict(self.test_data), [2, 8, 2, 3, 7, 6, 1, 1, 9, 1])
 
 
 if __name__ == '__main__':
