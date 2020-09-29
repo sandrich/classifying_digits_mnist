@@ -6,7 +6,6 @@ import pickle
 import os
 import sys
 from io import StringIO
-import pytest
 import numpy.testing
 from src.mlp import MLP
 from tests.test_dataset import load_data_and_cleanup
