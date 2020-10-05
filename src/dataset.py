@@ -1,5 +1,5 @@
 """
-Downloads and prepares the dataset
+Downloads and prepares the dataset for use with other algorithms
 """
 
 import os
@@ -8,9 +8,6 @@ import gzip
 import struct
 import requests
 import numpy as np
-
-# for debug purposes
-# from matplotlib import pyplot as plt
 
 # URLs for the MNIST dataset
 DOWNLOAD_URLS = {
@@ -24,9 +21,13 @@ DOWNLOAD_URLS = {
 def load_train_data():
     """
     loads the training data
-    :return:
-        data : 2D numpy array with the image data (one image per row)
-        labels : 1D numpy array with the label for each corresponding image
+
+    Returns
+    -------
+        data : numpy.array
+            2D numpy array with the image data (one image per row)
+        labels : numpy.array
+            1D numpy array with the label for each corresponding image
     """
     return __load_data('train')
 
@@ -34,9 +35,13 @@ def load_train_data():
 def load_test_data():
     """
     loads the test data
-    :return:
-        data : 2D numpy array with the image data (one image per row)
-        labels : 1D numpy array with the label for each corresponding image
+
+    Returns
+    --------
+        data : numpy.array
+            2D numpy array with the image data (one image per row)
+        labels : numpy.array
+            1D numpy array with the label for each corresponding image
     """
     return __load_data('test')
 
@@ -44,9 +49,12 @@ def load_test_data():
 def __load_data(which: str = "train"):
     """
     loads data, checks if the files exist and downloads them if needed
-    :return:
-        data : 2D numpy array with the image data (one image per row)
-        labels : 1D numpy array with the label for each corresponding image
+    Returns
+    -------
+        data : numpy.array
+            2D numpy array with the image data (one image per row)
+        labels : numpy.array
+            1D numpy array with the label for each corresponding image
     """
     if not __check_downloaded(which):
         print(f"No local {which} dataset found.")
@@ -60,8 +68,16 @@ def __load_data(which: str = "train"):
 def __check_downloaded(which: str = "train"):
     """
     Checks if the data has already been downloaded
-    :param which: which dataset to check, 'train' or 'test'
-    :return: True if the dataset is downloaded, False otherwise
+
+    Parameters
+    ----------
+    which : str
+        which dataset to check, 'train' or 'test'
+
+    Returns
+    -------
+    bool
+        True if the dataset is downloaded, False otherwise
     """
     if which not in ["train", "test"]:
         raise ValueError("download check error, please enter 'train' or 'test'")
@@ -73,10 +89,17 @@ def __check_downloaded(which: str = "train"):
 def __download_data(which: str = "train"):
     """
     Downloads the data and parses it
-    :param which: which dataset to download (train or test)
-    :return:
-        data : 2D numpy array containing the image data (one image per row)
-        labels : 1D numpy array with image labels corresponding to the data
+    Parameters
+    ----------
+    which: str
+        which dataset to download (train or test)
+
+    Returns
+    -------
+        data : numpy.array
+            2D numpy array containing the image data (one image per row)
+        labels : numpy.array
+            1D numpy array with image labels corresponding to the data
     """
     if which not in ["train", "test"]:
         raise ValueError("download check error, please enter 'train' or 'test'")
@@ -105,8 +128,12 @@ def __download_data(which: str = "train"):
 def __download_show_progress_bar(url, filepath):
     """
     Download utility with progress bar for more aesthetic view of the download
-    :param url: the url to download
-    :param filepath: the file path to write it to
+    Parameters
+    ----------
+    url : str
+        the url to download
+    filepath :
+        the file path to write it to
     """
 
     with open(filepath, "wb") as file_handler:
@@ -135,11 +162,19 @@ def __parse_downloaded(which: str = "train"):
 
     The exact data types are explained on http://yann.lecun.com/exdb/mnist/
 
-    :param which: which datasets to parse, should be either "train" or "test"
-    :return:
-        dims : a tuple of the dimensions of each pixel images (row, col)
-        data : 2D numpy array containing the pixel data for all images. Each row is one image raveled row by row
-        labels: 1D numpy array containing the labels for the images in the same order as the data
+    Parameters
+    ----------
+    which : str
+        which datasets to parse, should be either `train` or `test`
+
+    Returns
+    -------
+        dims : tuple
+            the dimensions of each pixel images (row, col)
+        data : numpy.array
+            2D numpy array containing the pixel data for all images. Each row is one image raveled row by row
+        labels : numpy.array
+            1D numpy array containing the labels for the images in the same order as the data
     """
     data_fp = f"tmp_data_{which}.gz"
     label_fp = f"tmp_label_{which}.gz"
@@ -162,10 +197,6 @@ def __parse_downloaded(which: str = "train"):
     data = np.frombuffer(data, dtype='>B', count=num_images*rows*cols,offset=16)
     # reshape so that each row corresponds to one image
     data = data.reshape((num_images, rows*cols))
-
-    # debug
-    # plt.imshow(data[1000].reshape((cols, rows)), cmap="gray")
-    # plt.show()
 
     labels = np.frombuffer(labels, dtype='>B', count=num_images, offset=8)
     return (rows, cols), data, labels

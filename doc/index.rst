@@ -1,6 +1,7 @@
 Welcome to M-NIST digit classifier's documentation!
 ===================================================
 
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -8,9 +9,7 @@ Welcome to M-NIST digit classifier's documentation!
    usage/installation
    usage/quickstart
    usage/params
-
-.. automodule::src
-   :members: AlgorithmMeta, RandomForest, MLP
+   api/api_ref
 
 Indices and tables
 ==================

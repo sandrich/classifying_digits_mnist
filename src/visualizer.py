@@ -19,10 +19,19 @@ def __display_confusion_matrix(actual_y, predicted_y, axes=None):
 def display_train_test_matrices(cache, save_location: str = None):
     """
     Displays the train and test confusion matrices
-    :param save_location: the location to save the figure on disk. If None, the plot is displayed on runtime.
-    :param cache: the cache dict returned by the classifier.
-    Must at least include ['actual', 'predtion'] objects, each with ['train', 'test'] arrays
-    :return:
+
+    Parameters
+    ----------
+    save_location : str
+    the location to save the figure on disk. If None, the plot is displayed on runtime and not saved.
+    cache : dict
+     the cache dict returned by the classifier.
+     Must at least include ['actual', 'prediction'] objects, each with ['train', 'test'] arrays
+
+    Returns
+    -------
+    matplotlib.pyplot.figure :
+        the figure
     """
     fig = plt.figure(figsize=(13, 7))
     ax1 = plt.subplot(121)
@@ -41,10 +50,20 @@ def display_train_test_matrices(cache, save_location: str = None):
 def display_rf_feature_importance(cache, save_location: str = None):
     """
     Displays which pixels have the most influence in the model's decision.
-    This is based on sklearn,ensemble.RandomForestClassifier's feature_importances_ array
-    :param save_location: the location to save the figure on disk. If None, the plot is displayed on runtime.
-    :param cache: the classifier cache (which contains the model itself)
-    :return:
+    This is based on sklearn,ensemble.RandomForestClassifier's feature_importance array
+
+    Parameters
+    ----------
+    save_location : str
+        the location to save the figure on disk. If None, the plot is displayed on runtime and not saved.
+    cache : dict
+        the cache dict returned by the classifier.
+        Must at least include ['actual', 'prediction'] objects, each with ['train', 'test'] arrays
+
+    Returns
+    -------
+    matplotlib.pyplot.figure :
+        the figure
     """
     fig = plt.figure()
     plt.title("Pixel importance in random forest classification")
@@ -60,9 +79,18 @@ def display_rf_feature_importance(cache, save_location: str = None):
 def display_loss_curve(losses, save_location: str=None):
     """
     Plots and displays the loss curve (usually for Neural Network models)
-    :param losses: 1D numpy array
-    :param save_location: the location to save the figure on disk. If None, the plot is displayed on runtime.
-    :return:
+
+    Parameters
+    ----------
+    save_location : str
+        the location to save the figure on disk. If None, the plot is displayed on runtime and not saved.
+    losses : numpy.array
+        the losses array of the MLP classifier's training.
+
+    Returns
+    -------
+    matplotlib.pyplot.figure :
+        the figure
     """
     fig = plt.figure()
     plt.plot(losses)
@@ -80,12 +108,25 @@ def display_mlp_coefficients(coefficients, rows=4, cols=4, save_location: str=No
     Shows the first layer's coefficients of the input layer
 
     The first rows*cols neurons' coefficients are displayed. if rows*cols is greater than the number of neurons, all the
-    neurons are displayed
-    :param coefficients: 2D array, the network's coefficients
-    :param rows: int, the number of rows to display
-    :param save_location: the location to save the figure on disk. If None, the plot is displayed on runtime.
-    :param cols: int, the number of columns to display
-    :return:
+    neurons are displayed. If there are more neurons' worth of coefficients to display than rows*cols, only the first
+    ones are displayed.
+
+    Parameters
+    ----------
+    coefficients numpy.array
+        2D numpy array containing the input coefficients (or weights) of the MLP's hidden layers. Only the first
+        layer's coefficients are displayed
+    rows : int
+        the number of rows to display in the figure
+    cols : int
+        the number of columns to display in the figure
+    save_location : str
+        the location to save the figure on disk. If None, the plot is displayed on runtime and not saved.
+
+    Returns
+    -------
+    matplotlib.pyplot.figure :
+        the figure
     """
     coefficients = coefficients[0]
     coefficients -= min(coefficients.ravel())
