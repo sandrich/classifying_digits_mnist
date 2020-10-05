@@ -578,10 +578,10 @@ exclude-protected=_asdict,
                   _make
 
 # List of valid names for the first argument in a class method.
-valid-classmethod-first-arg=cls
+valid-classmethod-first-arg=self
 
 # List of valid names for the first argument in a metaclass class method.
-valid-metaclass-classmethod-first-arg=cls
+valid-metaclass-classmethod-first-arg=self
 
 
 [EXCEPTIONS]

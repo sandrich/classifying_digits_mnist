@@ -5,7 +5,7 @@ import pickle
 import os
 import time
 from sklearn.base import BaseEstimator, ClassifierMixin
-
+from .visualizer import display_train_test_matrices
 
 class AlgorithmMeta(BaseEstimator, ClassifierMixin):
     """
@@ -94,12 +94,17 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         print('Test  Accuracy: {0:.3f}'.format(cache['accuracy']['test']))
         print('Training time : {0:.2f}s'.format(self.model.train_time))
 
-    def display_results(self, cache):
+    def display_results(self, cache, save_directory):
         """
         Displays various graphs that are pertinent to the algorithm's score (such as a confusion matrix)
+        :param save_directory: where to save the plots. If None, the plots will be displayed at runtime
         :param cache: the arguments to display (varies from algorithm to algorithm)
         :return:
         """
+        if save_directory is not None and not os.path.exists(save_directory):
+            os.mkdir(save_directory)
+        test_matrices_out = None if save_directory is None else os.path.join(save_directory, "confusion_matrices.png")
+        display_train_test_matrices(cache, save_location=test_matrices_out)
 
     def eval_train_test_cache(self, train_data, train_labels,
                               test_data, test_labels):
@@ -130,7 +135,7 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
             }, 'model': self.model}
 
     def run_classification(self, train_data, train_labels, test_data, test_labels,
-                           model_to_save=None, model_to_load=None):
+                           model_to_save=None, model_to_load=None, save_directory: str = None):
         """
         Trains and tests the classification
 
@@ -141,6 +146,7 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
             test_labels: Test y
             save_model: filepath to save the trained model
             model_to_load: filepath of saved model to load instead of training
+            save_directory: Where to save the output figures. If None, the figures will be displayed at runtime
 
 
         :return
@@ -166,5 +172,5 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         cache = self.eval_train_test_cache(train_data, train_labels, test_data, test_labels)
 
         self.print_results(cache)
-        self.display_results(cache)
+        self.display_results(cache, save_directory)
         return cache
