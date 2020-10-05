@@ -25,6 +25,7 @@ jobs:
             coverage run --source src -m unittest discover
             coverage report
             coverage html 
+            coveralls
           name: Test
 
       - store_artifacts:
