@@ -17,6 +17,10 @@ class RFTestCase(unittest.TestCase, AlgorithmTestMaster):
         super().load_test_datasets(self)
         self.test_model = RandomForest(n_estimators=1, max_depth=1, criterion="entropy")
 
+    @classmethod
+    def tearDownClass(self):
+        super().tear_down(self)
+
     def test_setup_errors(self):
         """Tests errors when setting up the model"""
         with self.assertRaises(ValueError):

@@ -1,6 +1,7 @@
 """
 MLP Classifier class
 """
+import os
 from sklearn.neural_network import MLPClassifier
 from .algorithm_meta import AlgorithmMeta
 from . import visualizer
@@ -59,7 +60,9 @@ class MLP(AlgorithmMeta):
         print('Batch size: {}'.format(self.batch_size))
         print('Max training iterations: {}'.format(self.max_iter))
 
-    def display_results(self, cache):
-        visualizer.display_train_test_matrices(cache)
-        visualizer.display_loss_curve(self.model.loss_curve_)
-        visualizer.display_mlp_coefficients(self.model.coefs_)
+    def display_results(self, cache, save_directory: str = None):
+        super().display_results(cache, save_directory)
+        loss_curve_out = None if save_directory is None else os.path.join(save_directory, "loss_curve.png")
+        visualizer.display_loss_curve(self.model.loss_curve_, save_location=loss_curve_out)
+        mlp_coefficients = None if save_directory is None else os.path.join(save_directory, "MLP_coefficients.png")
+        visualizer.display_mlp_coefficients(self.model.coefs_, save_location=mlp_coefficients)

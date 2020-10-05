@@ -5,9 +5,11 @@ from io import StringIO
 import os
 import pickle
 import sys
+from src.algorithm_meta import AlgorithmMeta
 from .test_dataset import load_data_and_cleanup
 TEST_MODEL_LOCATION = "tests/test.model"
 TEST_CACHE_LOCATION = "tests/cache.pkl"
+TEST_FOLDER = "tests/test_outputs/"
 EXP_PRINT_OUTPUT_BASE = "Classification stats:\n"\
                           "-----------------\n"\
                           "Train Accuracy: {0:.3f}\n"\
@@ -20,7 +22,7 @@ class AlgorithmTestMaster:
     """Master Test class for algorithm tests (contains overarching methods and tests)"""
 
     def __init__(self):
-        self.test_model = None
+        self.test_model: AlgorithmMeta = None
         self.train_data = []
         self.train_labels = []
         self.test_data = []
@@ -35,11 +37,15 @@ class AlgorithmTestMaster:
         self.test_data = data[501:511]
 
     def tear_down(self):
-        """Removes any created models or cache files from disk"""
+        """Removes any created models, cache files, folders, or images from disk"""
         if os.path.exists(TEST_MODEL_LOCATION):
             os.remove(TEST_MODEL_LOCATION)
         if os.path.exists(TEST_CACHE_LOCATION):
             os.remove(TEST_CACHE_LOCATION)
+        if os.path.exists(TEST_FOLDER):
+            for file in os.listdir(TEST_FOLDER):
+                os.remove(os.path.join(TEST_FOLDER, file))
+            os.removedirs(TEST_FOLDER)
 
     def set_up_trained_model(self, save_cache=False, save_model=False):
         """Runs a quick training of the model in case it is needed. can also save the model or the output"""
@@ -116,3 +122,22 @@ class AlgorithmTestMaster:
             print(error)
             raised = True
         assert self.test_model is not None and not raised
+
+    def test_run_classification(self):
+        """
+        Tests that the run_classification() runs without any errors
+        (all the individual methods are already tested)
+        """
+        raised = False
+        self.set_up_trained_model()
+        try:
+            self.test_model.run_classification(
+                train_data=self.train_data,
+                train_labels=self.train_labels,
+                test_data=self.test_data,
+                test_labels=self.test_labels,
+                save_directory=TEST_FOLDER)
+        except Exception as error:
+            print(error)
+            raised = True
+        assert not raised
