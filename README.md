@@ -1,4 +1,6 @@
 [![sandrich](https://circleci.com/gh/sandrich/classifying_digits_mnist.svg?style=svg)](https://circleci.com/gh/sandrich/classifying_digits_mnist) [![Coverage Status](https://coveralls.io/repos/github/sandrich/classifying_digits_mnist/badge.svg?branch=master)](https://coveralls.io/github/sandrich/classifying_digits_mnist?branch=master)
+![GitHub](https://img.shields.io/github/license/sandrich/classifying_digits_mnist)
+![GitHub issues](https://img.shields.io/github/issues/sandrich/classifying_digits_mnist)
 
 # Classifying digits using 28x28px images in one of 10 classes
 Small classifier for 28x28px handwritten digits based on [M-NIST](http://yann.lecun.com/exdb/mnist/) dataset 
