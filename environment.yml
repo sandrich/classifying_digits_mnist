@@ -13,3 +13,5 @@ dependencies:
   - coverage=5.3
   - pylint=2.6.0
   - pip==20.2.2
+  - pip:
+      - python-coveralls==2.9.3

@@ -27,7 +27,7 @@ def display_train_test_matrices(cache):
     Must at least include ['actual', 'predtion'] objects, each with ['train', 'test'] arrays
     :return:
     """
-    plt.figure(figsize=(13, 7))
+    fig = plt.figure(figsize=(13, 7))
     ax1 = plt.subplot(121)
     plt.title("Train Confusion Matrix")
     display_confusion_matrix(cache['actual']['train'], cache['prediction']['train'], show=False, axes=ax1)
@@ -35,6 +35,7 @@ def display_train_test_matrices(cache):
     plt.title("Test Confusion Matrix")
     display_confusion_matrix(cache['actual']['test'], cache['prediction']['test'], show=False, axes=ax2)
     plt.show()
+    return fig
 
 
 def display_rf_feature_importance(cache):

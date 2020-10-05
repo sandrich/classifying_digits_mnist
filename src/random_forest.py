@@ -32,7 +32,11 @@ class RandomForest(AlgorithmMeta):
         if self.impurity_method not in ['entropy', 'gini']:
             raise ValueError('Impurity method supported: entropy, gini')
 
-        self.model = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth, criterion=criterion)
+        self.model = RandomForestClassifier(
+            n_estimators=n_estimators,
+            max_depth=max_depth,
+            criterion=criterion,
+            random_state=12345)  # static random seed
 
     def load_model(self, filepath):
         super().load_model(filepath)
