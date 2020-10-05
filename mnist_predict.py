@@ -34,7 +34,7 @@ def main():
                             default='auto')
     mlp_parser.add_argument('--max_iter', '-i', type=int,
                             help="The number of maximum training iterations to perform", default=200)
-    mlp_parser.add_argument('--verbose_MLP', '-v',
+    mlp_parser.add_argument('--verbose', '-v',
                             help="Show training iterations with losses while training", action="store_true")
     mlp_parser.add_argument('--save', '-s', help="Indicate the filename to save the model to disk", default=None)
     mlp_parser.add_argument('--load', '-l', help="Indicate the filename of a saved model to load", default=None)

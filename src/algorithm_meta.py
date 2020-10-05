@@ -1,6 +1,9 @@
 """
-Algorithm class
+algorithm_meta.py
+=================
+Contains the AlgorithmMeta class, which is the parent class to all algorithms used in this package.
 """
+
 import pickle
 import os
 import time
@@ -9,7 +12,9 @@ from .visualizer import display_train_test_matrices
 
 class AlgorithmMeta(BaseEstimator, ClassifierMixin):
     """
-    The Algorithm parent class which contains all the basic algorithm methods
+    AlgorithmMeta
+    =============
+    The Algorithm parent class which contains all the basic algorithm methods.
     """
 
     def __init__(self):
