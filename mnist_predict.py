@@ -40,8 +40,6 @@ def main():
     mlp_parser.add_argument('--load', '-l', help="Indicate the filename of a saved model to load", default=None)
 
     args = parser.parse_args()
-    print(args)
-    return
 
     if args.save_RF is not None and args.load_RF is not None:
         print("Can't load and save a model at the same time... please choose just one of the two options")
