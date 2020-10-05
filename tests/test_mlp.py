@@ -2,7 +2,7 @@
 MLP class tests
 """
 import unittest
-from src.mlp import MLP
+from mnist_classifier.mlp import MLP
 from .algo_test_master import AlgorithmTestMaster, EXP_PRINT_OUTPUT_BASE
 
 

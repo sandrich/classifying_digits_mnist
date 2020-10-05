@@ -2,7 +2,7 @@
 Testing the Random Forest Algorithm
 """
 import unittest
-from src.random_forest import RandomForest
+from mnist_classifier.random_forest import RandomForest
 from .algo_test_master import AlgorithmTestMaster, EXP_PRINT_OUTPUT_BASE
 
 
