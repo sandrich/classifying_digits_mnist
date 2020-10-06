@@ -14,6 +14,4 @@ Welcome to M-NIST digit classifier's documentation!
 Indices and tables
 ==================
 
-* :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

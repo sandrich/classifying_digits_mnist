@@ -6,7 +6,7 @@ import os
 import time
 from sklearn.base import BaseEstimator, ClassifierMixin
 from .visualizer import display_train_test_matrices
-
+from pandas import DataFrame, read_csv, concat
 
 class AlgorithmMeta(BaseEstimator, ClassifierMixin):
     """
@@ -15,8 +15,9 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
     the train/test mechanics is the same.
     """
 
-    def __init__(self):
+    def __init__(self, report_directory: str = None):
         self.model = None
+        self.report_directory = report_directory
 
     def _check_loaded_model_and_set_conf(self, props: list):
         """
@@ -107,12 +108,17 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
 
     def print_results(self, cache):
         """
-        Prints the results of the classification
+        Prints the results of the classification, and returns them as a pandas DataFrame
 
         Parameters
         ----------
         cache : dict
             the cache of a ``run_classification()`` function call.
+
+        Returns
+        -------
+        pandas.DataFrame:
+            the classification results as a single-line data frame
         """
         print('Classification stats:')
         print('-----------------')
@@ -120,20 +126,24 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         print('Test  Accuracy: {0:.3f}'.format(cache['accuracy']['test']))
         print('Training time : {0:.2f}s'.format(self.model.train_time))
 
-    def display_results(self, cache, save_directory):
+        return DataFrame.from_dict({
+            "Train accuracy": [cache['accuracy']['train']],
+            "Test accuracy": [cache['accuracy']['test']],
+            "Training time (s)": [self.model.train_time]
+        })
+
+    def display_results(self, cache):
         """
         Displays various graphs that are pertinent to the algorithm's score (such as a confusion matrix)
 
         Parameters
         ----------
-        save_directory : str
-            where to save the plots. If None, the plots will be displayed at runtime
         cache : dict
             the arguments to display (varies from algorithm to algorithm)
         """
-        if save_directory is not None and not os.path.exists(save_directory):
-            os.mkdir(save_directory)
-        test_matrices_out = None if save_directory is None else os.path.join(save_directory, "confusion_matrices.png")
+
+        test_matrices_out = None if self.report_directory is None else \
+            os.path.join(self.report_directory, "confusion_matrices.png")
         display_train_test_matrices(cache, save_location=test_matrices_out)
 
     def eval_train_test_cache(self, train_data, train_labels,
@@ -146,10 +156,15 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         train_data : numpy.array
             the raw training data
         train_labels : numpy.array
+            the ground truth of the training data
+        test_data : numpy.array
+            the data to test against
+        test_labels : numpy.array
+            the ground truth of the test data
 
         Returns
         -------
-        dict: the actual data, preducted data, accuracy, and model in a dict format
+        dict: the actual data, predicted data, accuracy, and model in a dict format
 
         """
         train_pred = self.predict(train_data)
@@ -170,8 +185,26 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
                 'test': test_labels
             }, 'model': self.model}
 
+    def save_results(self, results: DataFrame):
+        """
+        Saves the results to disk as a CSV file if the report_directory is not None. If the output report file already
+        exists, it will have lines appended to it
+
+        Parameters
+        ----------
+        results : pandas.DataFrame
+            the results table to save to disk.
+        """
+        if self.report_directory is None:
+            return
+        path = os.path.join(self.report_directory, "report.csv")
+        if os.path.exists(path):
+            existing = read_csv(path)
+            results = concat([results, existing], axis=0,ignore_index=True)
+        results.to_csv(path, index=False)
+
     def run_classification(self, train_data, train_labels, test_data, test_labels,
-                           model_to_save=None, model_to_load=None, save_directory: str = None):
+                           model_to_save=None, model_to_load=None):
         """
         Trains and tests the classification
 
@@ -189,8 +222,6 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
             filepath of a saved model to load instead of train
         model_to_save : str
             filepath on which to save the trained model
-        save_directory : str
-            directory where to save the output images
 
         Returns
         -------
@@ -208,6 +239,6 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
 
         cache = self.eval_train_test_cache(train_data, train_labels, test_data, test_labels)
 
-        self.print_results(cache)
-        self.display_results(cache, save_directory)
+        self.save_results(self.print_results(cache))
+        self.display_results(cache)
         return cache

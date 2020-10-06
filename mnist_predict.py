@@ -4,6 +4,7 @@ Entry point script
 import argparse
 import sys
 from src import dataset
+from src import report_manager
 from src.random_forest import RandomForest
 from src.mlp import MLP
 
@@ -18,6 +19,9 @@ def main():
     # Global arguments
     parser.add_argument("--random_seed", "-rs", type=int,
                         help="Defines a random seed to reproduce arguments", default=None)
+    parser.add_argument("--report_directory", '-rd', type=str,
+                        help="An output directory where to save the report. "
+                             "If the folder does not exist, it will be created", default=None)
 
     # Random Forest arguments
     rf_parser = subparsers.add_parser("rf", help="Use a Random Forest Classifier to train/test the data")
@@ -45,9 +49,12 @@ def main():
 
     args = parser.parse_args()
 
+    # load global arguments
     if args.save is not None and args.load is not None:
         print("Can't load and save a model at the same time... please choose just one of the two options")
         sys.exit(1)
+    if args.report_directory is not None:
+        args.report_directory = report_manager.prepare_report_dest(args.report_directory)
 
     # Load dataset
     train_data, train_labels = dataset.load_train_data()
@@ -55,7 +62,8 @@ def main():
 
     # Random Forest
     if all([param in args for param in ['depth', 'impurity_method', 'trees']]):
-        rf_classifier = RandomForest(n_estimators=args.trees, max_depth=args.depth, criterion=args.impurity_method)
+        rf_classifier = RandomForest(n_estimators=args.trees, max_depth=args.depth, criterion=args.impurity_method,
+                                     report_directory=args.report_directory)
         rf_classifier.run_classification(train_data, train_labels, test_data, test_labels,
                                          args.save, args.load)
 
@@ -74,7 +82,8 @@ def main():
                              max_iter=args.max_iter,
                              batch_size=args.batch_size,
                              verbose=args.verbose,
-                             random_seed=args.random_seed)
+                             random_seed=args.random_seed,
+                             report_directory=args.report_directory)
 
         mlp_classifier.run_classification(train_data, train_labels, test_data, test_labels,
                                           args.save, args.load)

@@ -2,6 +2,7 @@
 MLP Classifier class
 """
 import os
+from pandas import DataFrame
 from sklearn.neural_network import MLPClassifier
 from .algorithm_meta import AlgorithmMeta
 from . import visualizer
@@ -13,7 +14,8 @@ class MLP(AlgorithmMeta):
     """
 
     def __init__(self, hidden_layer_sizes: tuple = (10, 10, 10), alpha: float = 0.0001,
-                 batch_size='auto', max_iter: int = 200, verbose: bool = False, random_seed: int=None):
+                 batch_size='auto', max_iter: int = 200, verbose: bool = False, random_seed: int=None,
+                 report_directory: str = None):
         """
         Initializes the MLP model
 
@@ -31,8 +33,10 @@ class MLP(AlgorithmMeta):
             whether or not to print out the training iterations
         random_seed : int
             a random seed to make results reproducible. if none, no random seed is used
+        report_directory : str
+            Where to save the output images
         """
-        super().__init__()
+        super().__init__(report_directory)
 
         if len(hidden_layer_sizes) == 0:
             raise ValueError("You need at least one hidden layer in the MLP!")
@@ -62,16 +66,27 @@ class MLP(AlgorithmMeta):
         self._check_loaded_model_and_set_conf(['hidden_layer_sizes', 'alpha', 'batch_size', 'max_iter'])
 
     def print_results(self, cache):
-        super().print_results(cache)
+        results = super().print_results(cache)
+        hidden_layers_str = ", ".join([str(n) for n in self.hidden_layers])
         print('-----------------')
-        print('Hidden-layer neuron count: {}'.format(", ".join([str(n) for n in self.hidden_layers])))
+        print('Hidden-layer neuron count: {}'.format(hidden_layers_str))
         print('Alpha: {}'.format(self.alpha))
         print('Batch size: {}'.format(self.batch_size))
         print('Max training iterations: {}'.format(self.max_iter))
 
-    def display_results(self, cache, save_directory: str = None):
-        super().display_results(cache, save_directory)
-        loss_curve_out = None if save_directory is None else os.path.join(save_directory, "loss_curve.png")
+        results['Hidden layer Neurons'] = [hidden_layers_str]
+        results['Alpha'] = [self.alpha]
+        results['Batch size'] = [self.batch_size]
+        results['Max training Iterations'] = [self.max_iter]
+        results['Actual training Iterations'] = [self.model.n_iter_]
+        return results
+
+    def display_results(self, cache):
+        super().display_results(cache)
+        loss_curve_out = None if self.report_directory is None else \
+            os.path.join(self.report_directory, "loss_curve.png")
         visualizer.display_loss_curve(self.model.loss_curve_, save_location=loss_curve_out)
-        mlp_coefficients = None if save_directory is None else os.path.join(save_directory, "MLP_coefficients.png")
+
+        mlp_coefficients = None if self.report_directory is None else \
+            os.path.join(self.report_directory, "MLP_coefficients.png")
         visualizer.display_mlp_coefficients(self.model.coefs_, save_location=mlp_coefficients)
