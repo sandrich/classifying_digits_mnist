@@ -75,12 +75,12 @@ class RandomForest(AlgorithmMeta):
 
         return results
 
-    def display_results(self, cache, save_directory: str = None):
+    def display_results(self, cache):
         super().display_results(cache)
         if self.report_directory is None:
             rf_feature_importance_out = None
         elif self.test_suite_iter is None:
-            rf_features_importance_out = os.path.join(self.report_directory, "RF_feature_importance.png")
+            rf_feature_importance_out = os.path.join(self.report_directory, "RF_feature_importance.png")
         else:
             rf_feature_importance_out = os.path.join(self.report_directory,
                                                      f"{self.test_suite_iter}_RF_feature_importance.png")

@@ -2,7 +2,6 @@
 MLP Classifier class
 """
 import os
-from pandas import DataFrame
 from sklearn.neural_network import MLPClassifier
 from .algorithm_meta import AlgorithmMeta
 from . import visualizer

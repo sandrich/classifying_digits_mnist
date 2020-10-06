@@ -3,7 +3,7 @@ Testing the Random Forest Algorithm
 """
 import unittest
 from src.random_forest import RandomForest
-from .algo_test_master import AlgorithmTestMaster, EXP_PRINT_OUTPUT_BASE
+from .algo_test_master import AlgorithmTestMaster, EXP_PRINT_OUTPUT_BASE, TEST_FOLDER
 
 
 class RFTestCase(unittest.TestCase, AlgorithmTestMaster):
@@ -15,11 +15,12 @@ class RFTestCase(unittest.TestCase, AlgorithmTestMaster):
     def setUpClass(self):
         """Set up superclass"""
         super().load_test_datasets(self)
-        self.test_model = RandomForest(n_estimators=1, max_depth=1, criterion="entropy")
+        self.test_model = RandomForest(n_estimators=1, max_depth=1, criterion="entropy", random_seed=12345,
+                                       report_directory=TEST_FOLDER)
 
     @classmethod
     def tearDownClass(self):
-        super().tear_down(self)
+        super().tear_down_class(self)
 
     def test_setup_errors(self):
         """Tests errors when setting up the model"""

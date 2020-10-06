@@ -81,10 +81,9 @@ def prepare_report_dest(report_filepath: str):
     if not os.path.exists(target):
         os.mkdir(target)
         return target
-    else:
-        increment = 1
-        while os.path.exists(target + f"_{increment}"):
-            increment += 1
-        target = target + f"_{increment}"
-        os.mkdir(target)
-        return target
+    increment = 1
+    while os.path.exists(target + f"_{increment}"):
+        increment += 1
+    target = target + f"_{increment}"
+    os.mkdir(target)
+    return target

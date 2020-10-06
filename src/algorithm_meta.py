@@ -5,8 +5,8 @@ import pickle
 import os
 import time
 from sklearn.base import BaseEstimator, ClassifierMixin
-from .visualizer import display_train_test_matrices
 from pandas import DataFrame, read_csv, concat
+from .visualizer import display_train_test_matrices
 
 
 class AlgorithmMeta(BaseEstimator, ClassifierMixin):
@@ -207,7 +207,7 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         results : pandas.DataFrame
             the results table to save to disk.
         """
-        if self.report_directory is None:
+        if self.report_directory is None or not os.path.exists(self.report_directory):
             return
         path = os.path.join(self.report_directory, "report.csv")
         if os.path.exists(path):

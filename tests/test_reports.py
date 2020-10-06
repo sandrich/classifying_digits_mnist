@@ -1,16 +1,19 @@
-import unittest
+"""Report Manager Tests"""
 import json
-from src import report_manager
-import random
-import string
-import shutil
 import os
+import random
+import shutil
+import string
+import unittest
+from src import report_manager
+
 CORRECT_CONF_FILE = "tests/correct_conf.json"
 NO_REPORT_DIR_CONF_FILE = "tests/no_report_conf.json"
 NO_TEST_CONF_FILE = "tests/no_test_conf.json"
 
 
 class ReportTest(unittest.TestCase):
+    """Report Manager test class"""
 
     target_test_folder = ""
 
@@ -80,6 +83,7 @@ class ReportTest(unittest.TestCase):
                                '-v']])
 
     def test_error_conf_file(self):
+        """Tests that the errors are properly raised"""
         with self.assertRaises(ValueError):
             _ = report_manager.load_test_suite_conf(NO_REPORT_DIR_CONF_FILE)
 
