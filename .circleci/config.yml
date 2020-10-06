@@ -41,7 +41,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            pip install sphinx ghp-import
+            pip install sphinx sphinx-rtd-theme ghp-import
       
       - run:
           name: Build and deploy
