@@ -5,7 +5,7 @@ import argparse
 import sys
 from mnist_classifier import dataset
 from mnist_classifier import report_manager
-from mnist_classifier.random_forest import  RandomForest
+from mnist_classifier.random_forest import RandomForest
 from mnist_classifier.mlp import MLP
 
 
@@ -64,7 +64,8 @@ def main(*arguments):
         for i, test in enumerate(test_suite):
             args = parser.parse_args(test)
             process_args_and_run(args, test_suite_iter=i)
-
+    else:
+        process_args_and_run(args)
 
 def process_args_and_run(args, test_suite_iter: int = None):
     """
