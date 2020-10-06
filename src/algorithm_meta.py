@@ -1,5 +1,5 @@
 """
-Algorithm class
+AlgorithmMeta
 """
 import pickle
 import os
@@ -7,9 +7,12 @@ import time
 from sklearn.base import BaseEstimator, ClassifierMixin
 from .visualizer import display_train_test_matrices
 
+
 class AlgorithmMeta(BaseEstimator, ClassifierMixin):
     """
-    The Algorithm parent class which contains all the basic algorithm methods
+    The Algorithm parent class which contains all the basic algorithm methods. Most of the logic of the algorithm is
+    done here. Indeed, other than setting up the algorithm to match given specs (like number of trees or hidden layers)
+    the train/test mechanics is the same.
     """
 
     def __init__(self):
@@ -19,13 +22,16 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         """
         Warns the user if there are any discrepancies between the configuration and loaded model's parameters.
 
-        If a use enters for example `python mnist.py --load_RF model.rf --n_estimators 200` but `model.rf` has only 100
-        estimators, this method will warn the user that the loaded model does not have the same configuration as
-        the user inputted. It will also set the object's properties to reflect that of the loaded model.
+        If a use enters for example ``python mnist.py --load_RF model.rf --n_estimators 200`` but ``model.rf``
+        has only 100 estimators, this method will warn the user that the loaded model does not have the same
+        configuration as the user inputted. It will also set the object's
+        properties to reflect that of the loaded model.
 
-        :param props: The list of properties to check between the model and the object. This means that they must have
-        the same names.
-        :return:
+        Parameters
+        ----------
+        props
+            The list of properties to check between the model and the object.
+            This means that they must have the same names.
         """
         for prop in props:
             if prop in self.__dict__ and \
@@ -38,10 +44,19 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
                 self.__dict__[prop] = self.model.__dict__[prop]
 
     def fit(self, data, targets):
-        """ Fits the internal model on the given data
-        :param data: the data to fit the model on
-        :param targets: the output class of the given data
-        :return:
+        """
+        Fits the internal model on the given data, and returns it
+
+        Parameters
+        ----------
+        data : numpy.array
+            the data on which you want to fit
+        targets : numpy.array
+            the target classes of the training data you want to fit
+
+        Returns
+        -------
+        sklearn.BaseEstimator: The trained model
         """
 
         print(f"Starting training {self.__class__.__name__}...")
@@ -55,20 +70,25 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         """
         Returns prediction of the class y for input
 
-        :param
-            classifier: Class instance with the trained random forest
-            data_to_predict: Sample data set
+        Parameters
+        ----------
+        data_to_predict :numpy.array
+            Sample data set on which to generate predictions
 
-        :return
-            Array with the predicted class label
+        Returns
+        -------
+        numpy.array: Array with the predicted class label
         """
         return self.model.predict(data_to_predict)
 
     def load_model(self, filepath):
         """
-        Loads the model from disk into the object's `model` attribute
-        :param filepath: the path of the model on disk
-        :return:
+        Loads the model from disk into the object's ``model`` attribute
+
+        Parameters
+        ----------
+        filepath : str
+            the path of the model on disk
         """
         print("Loading model", filepath)
         self.model = pickle.load(open(filepath, 'rb'))
@@ -76,8 +96,11 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
     def save_model(self, filepath):
         """
         Saves the trained `model` attribute to disk
-        :param filepath: the destination filepath to save to disk to.
-        :return:
+
+        Parameters
+        ----------
+        filepath : str
+            the destination filepath to save to disk to.
         """
         print("Saving model as", filepath)
         pickle.dump(self.model, open(filepath, 'wb'))
@@ -85,8 +108,11 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
     def print_results(self, cache):
         """
         Prints the results of the classification
-        :param cache: the arguments to print out (varies from algorithm to algorithm)
-        :return:
+
+        Parameters
+        ----------
+        cache : dict
+            the cache of a ``run_classification()`` function call.
         """
         print('Classification stats:')
         print('-----------------')
@@ -97,9 +123,13 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
     def display_results(self, cache, save_directory):
         """
         Displays various graphs that are pertinent to the algorithm's score (such as a confusion matrix)
-        :param save_directory: where to save the plots. If None, the plots will be displayed at runtime
-        :param cache: the arguments to display (varies from algorithm to algorithm)
-        :return:
+
+        Parameters
+        ----------
+        save_directory : str
+            where to save the plots. If None, the plots will be displayed at runtime
+        cache : dict
+            the arguments to display (varies from algorithm to algorithm)
         """
         if save_directory is not None and not os.path.exists(save_directory):
             os.mkdir(save_directory)
@@ -110,11 +140,17 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
                               test_data, test_labels):
         """
         Generates a cache object containing the test and test data, labels, and accuracies, and a copy of the model.
-        :param train_data:
-        :param train_labels:
-        :param test_data:
-        :param test_labels:
-        :return:
+
+        Parameters
+        ----------
+        train_data : numpy.array
+            the raw training data
+        train_labels : numpy.array
+
+        Returns
+        -------
+        dict: the actual data, preducted data, accuracy, and model in a dict format
+
         """
         train_pred = self.predict(train_data)
         test_pred = self.predict(test_data)
@@ -139,25 +175,26 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         """
         Trains and tests the classification
 
-        :param
-            train_data: Train sample set
-            train_labels: Train y
-            X: Test data set
-            test_labels: Test y
-            save_model: filepath to save the trained model
-            model_to_load: filepath of saved model to load instead of training
-            save_directory: Where to save the output figures. If None, the figures will be displayed at runtime
+        Parameters
+        ----------
+        train_data : numpy.array
+            the data to train on
+        train_labels :numpy.array
+            the labels of the train data
+        test_data : numpy.array
+            the data to use to run predictions
+        test labels : numpy.array
+            the ground truth of the test data
+        model_to_load : str
+            filepath of a saved model to load instead of train
+        model_to_save : str
+            filepath on which to save the trained model
+        save_directory : str
+            directory where to save the output images
 
-
-        :return
-            Returns collection with prediction and accuracy
-            cache:
-                prediction:
-                    train: float
-                    test: float
-                accuracy:
-                    train: float
-                    test: float
+        Returns
+        -------
+        dict: Returns collection with prediction and accuracy
         """
         if model_to_load is not None and os.path.exists(model_to_load):
             self.load_model(model_to_load)

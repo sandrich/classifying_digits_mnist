@@ -4,9 +4,8 @@ Entry point script
 import argparse
 import sys
 from src import dataset
-from src.random_forest import  RandomForest
+from src.random_forest import RandomForest
 from src.mlp import MLP
-
 
 
 def main():
@@ -14,28 +13,31 @@ def main():
     Main function
     """
     parser = argparse.ArgumentParser(description='Run MNIST classifier')
+    subparsers = parser.add_subparsers(title="algorithms", help="Individual algorithms' options")
 
     # Random Forest arguments
-    parser.add_argument('--rf', action="store_true", help="Use this flag to use the Random Forest Classifier.")
-    parser.add_argument('--trees', type=int, help='Number of n_estimators', default=20)
-    parser.add_argument('--depth', type=int, help='Maximum tree max_depth', default=9)
-    parser.add_argument('--impurity_method', help='Impurity method', default='entropy', choices=['entropy', 'gini'])
-    parser.add_argument('--save_RF', help="Saves the trained Random Forest model to disk", default=None)
-    parser.add_argument('--load_RF', help="Loads a trained Random Forest model from disk", default=None)
+    rf_parser = subparsers.add_parser("rf", help="Use a Random Forest Classifier to train/test the data")
+    rf_parser.add_argument('--trees', '-t', type=int, help='Number of n_estimators', default=20)
+    rf_parser.add_argument('--depth', '-d', type=int, help='Maximum tree max_depth', default=9)
+    rf_parser.add_argument('--impurity_method', '-i', help='Impurity method', default='entropy',
+                           choices=['entropy', 'gini'])
+    rf_parser.add_argument('--save', '-s', help="Indicate the filename to save the model to disk", default=None)
+    rf_parser.add_argument('--load', '-l', help="Indicate the filename of a saved model to load", default=None)
 
     # MLP arguments
-    parser.add_argument('--mlp', action="store_true", help="Use this flag to use the MLP Classifier")
-    parser.add_argument('--hidden_layers', nargs="+", help="The number of neurons in each hidden layer. " +
-                                                           "Separate the hidden layers with spaces.", default=['100'])
-    parser.add_argument('--alpha', type=float, help="the alpha bias of the MLP", default=0.0001)
-    parser.add_argument('--batch_size', help="The batch size of training. you can specify a number or 'auto'",
-                        default='auto')
-    parser.add_argument('--max_iter', type=int,
-                        help="The number of maximum training iterations to perform", default=200)
-    parser.add_argument('--verbose_MLP',
-                        help="Show training iterations with losses while training", action="store_true")
-    parser.add_argument('--save_MLP', help="Saves the trained MLP model to disk", default=None)
-    parser.add_argument('--load_MLP', help="Loads a trained MLP model from disk", default=None)
+    mlp_parser = subparsers.add_parser('mlp', help="Use a MLP Classifier to train/test the data")
+    mlp_parser.add_argument('--hidden_layers', '-hl', nargs="+", help="The number of neurons in each hidden layer. " +
+                                                                     "Separate the hidden layers with spaces.",
+                            default=['100'])
+    mlp_parser.add_argument('--alpha', '-a', type=float, help="the alpha bias of the MLP", default=0.0001)
+    mlp_parser.add_argument('--batch_size', '-b', help="The batch size of training. you can specify a number or 'auto'",
+                            default='auto')
+    mlp_parser.add_argument('--max_iter', '-i', type=int,
+                            help="The number of maximum training iterations to perform", default=200)
+    mlp_parser.add_argument('--verbose', '-v',
+                            help="Show training iterations with losses while training", action="store_true")
+    mlp_parser.add_argument('--save', '-s', help="Indicate the filename to save the model to disk", default=None)
+    mlp_parser.add_argument('--load', '-l', help="Indicate the filename of a saved model to load", default=None)
 
     args = parser.parse_args()
 
@@ -63,13 +65,13 @@ def main():
     if args.rf:
         rf_classifier = RandomForest(n_estimators=args.trees, max_depth=args.depth, criterion=args.impurity_method)
         rf_classifier.run_classification(train_data, train_labels, test_data, test_labels,
-                                         args.save_RF, args.load_RF)
+                                         args.save, args.load)
 
     if args.mlp:
         mlp_classifier = MLP(hidden_layer_sizes=args.hidden_layers, alpha=args.alpha,
                              max_iter=args.max_iter, batch_size=args.batch_size)
         mlp_classifier.run_classification(train_data, train_labels, test_data, test_labels,
-                                          args.save_MLP, args.load_MLP)
+                                          args.save, args.load)
 
 
 if __name__ == "__main__":

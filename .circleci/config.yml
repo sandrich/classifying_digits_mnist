@@ -1,5 +1,10 @@
 version: 2.1
 
+general:
+  branches:
+    ignore:
+      - gh-pages
+
 jobs:
   build-and-test:
     docker:
@@ -24,14 +29,47 @@ jobs:
             source activate mnist_classifier
             coverage run --source src -m unittest discover
             coverage report
-            coverage html 
+            coverage html
             coveralls
           name: Test
 
       - store_artifacts:
           path: htmlcov
 
+  deploy-docs:
+    docker:
+      - image: python:3.6
+
+    steps:
+      - checkout
+
+      - add_ssh_keys:
+          fingerprints:
+            - "ea:b2:4f:55:9f:41:22:c5:7c:9f:b9:b1:91:e1:64:59"
+            
+      - run:
+          name: install dependencies
+          command: |
+            pip install sphinx sphinx-rtd-theme ghp-import
+      
+      - run:
+          name: Build and deploy
+          command: |
+            sphinx-build doc sphinx
+            ghp-import -m "Update docs [ci skip]" --no-jekyll sphinx/
+            git config user.email "ci-build@chrissandrini.ch"
+            git config user.name "ci-build"
+            git push origin gh-pages
+
 workflows:
   main:
     jobs:
       - build-and-test
+      - deploy-docs:
+          requires:
+            - build-and-test
+          
+          filters:
+            branches:
+              only:
+                - master

@@ -1,5 +1,5 @@
 """
-RandomForest model
+RandomForest
 """
 import os
 from sklearn.ensemble import RandomForestClassifier
@@ -9,15 +9,23 @@ from .algorithm_meta import AlgorithmMeta
 
 class RandomForest(AlgorithmMeta):
     """
-    RandomForest implementation
+    Random Forest which inherits from the AlgorithmMeta class
     """
 
     def __init__(self, n_estimators, max_depth, criterion):
         """
         Initiates the model with the correct configurations.
-        :param n_estimators:
-        :param max_depth:
-        :param criterion:
+
+        Parameters
+        ----------
+        n_estimators : int
+            the number of estimators to use in the random forest
+
+        max_depth : int
+            the maximum depth of each tree in the forest
+
+        criterion : str
+            the split criterion for the trees in the forest. Can either be `gini` or`entropy`
         """
         super().__init__()
         self.trees = n_estimators
