@@ -6,3 +6,6 @@ __pycache__/
 htmlcov
 sphinx/
 mlp.model
+dist/
+build/
+*.egg-info/
