@@ -92,8 +92,7 @@ jobs:
           name: Upload package to pypi
           command: |
             source activate mnist_classifier
-            ls -la dist/*
-            python -m twine upload dist/*
+            twine upload dist/*
       
             
 
