@@ -39,11 +39,7 @@ jobs:
   deploy-docs:
     docker:
       - image: python:3.6
-    build:
-      filters:
-          branches:
-            only:
-              - master
+
     steps:
       - checkout
 
@@ -69,4 +65,11 @@ workflows:
   main:
     jobs:
       - build-and-test
-      - deploy-docs
+      - deploy-docs:
+          requires:
+            - build-and-test
+          
+          filters:
+            branches:
+              only:
+                - master
