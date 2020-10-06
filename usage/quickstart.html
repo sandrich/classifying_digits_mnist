@@ -88,11 +88,13 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html#installation">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="params.html">Algorithm Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="test_suite.html">Test suite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html">AlgorithmMeta</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#randomforest">RandomForest</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#mlp">MLP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#dataset">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#visualizer">Visualizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#module-mnist_classifier.report_manager">Report Manager</a></li>
 </ul>
 
             
@@ -163,10 +165,10 @@
 <p>The script can either run the detection using as a Random Forest, or with an MLP Neural Network.
 The simplest “out-of-the-box” way to run the script is to call the script with either the <code class="docutils literal notranslate"><span class="pre">rf</span></code> or <code class="docutils literal notranslate"><span class="pre">mlp</span></code> flags:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># run the train/test with a Random Forest</span>
-<span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">rf</span>
+<span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="n">rf</span>
 
 <span class="c1"># run the train/test with an MLP</span>
-<span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">mlp</span>
+<span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="n">mlp</span>
 </pre></div>
 </div>
 <p>Both algorithms have default settings, so no additional input is required.</p>

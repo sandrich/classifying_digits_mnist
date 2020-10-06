@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Algorithm Parameters" href="../usage/params.html" /> 
+    <link rel="prev" title="Test suite" href="../usage/test_suite.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,11 +87,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../usage/installation.html#installation">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage/quickstart.html">Quick start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../usage/params.html">Algorithm Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/test_suite.html">Test suite</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">AlgorithmMeta</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#randomforest">RandomForest</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#mlp">MLP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#dataset">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#visualizer">Visualizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#module-mnist_classifier.report_manager">Report Manager</a></li>
 </ul>
 
             
@@ -172,6 +174,48 @@
 <div class="section" id="visualizer">
 <h1>Visualizer<a class="headerlink" href="#visualizer" title="Permalink to this headline">¶</a></h1>
 </div>
+<div class="section" id="module-mnist_classifier.report_manager">
+<span id="report-manager"></span><h1>Report Manager<a class="headerlink" href="#module-mnist_classifier.report_manager" title="Permalink to this headline">¶</a></h1>
+<p>Handles everything concerning reporting.</p>
+<dl class="py function">
+<dt id="mnist_classifier.report_manager.load_test_suite_conf">
+<code class="sig-prename descclassname">mnist_classifier.report_manager.</code><code class="sig-name descname">load_test_suite_conf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.report_manager.load_test_suite_conf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a test suite json configuration file, and returns an array of parameters to pass to the argument parser.
+The JSON file should be formatted like the <cite>test_suite_example.json</cite> file in this repository. The names of the
+dict keys for each test should be</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – the filepath to the test suite JSON.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of parameter lists corresponding to the configurations of each of the tests to be run</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mnist_classifier.report_manager.prepare_report_dest">
+<code class="sig-prename descclassname">mnist_classifier.report_manager.</code><code class="sig-name descname">prepare_report_dest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">report_filepath</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.report_manager.prepare_report_dest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepares the destination output file. Checks if the location exists already, if it does, it creates a unique version
+with an auto_increment. So for example if inputted “my_report” and a folder “my_report” exists, a folder will be
+created called “my_report_1”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>report_filepath</strong> (<em>str</em>) – the target folder where the report should be created</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the actual filepath that was created</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
 
 
            </div>
@@ -182,7 +226,7 @@
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="../usage/params.html" class="btn btn-neutral float-left" title="Algorithm Parameters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../usage/test_suite.html" class="btn btn-neutral float-left" title="Test suite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

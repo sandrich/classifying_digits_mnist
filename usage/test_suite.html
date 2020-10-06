@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Test suite &mdash; M-NIST digit classifier  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="AlgorithmMeta" href="../api/api_ref.html" />
+    <link rel="prev" title="Algorithm Parameters" href="params.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> M-NIST digit classifier
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="params.html">Algorithm Parameters</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Test suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html">AlgorithmMeta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#randomforest">RandomForest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#mlp">MLP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#dataset">Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#visualizer">Visualizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#module-mnist_classifier.report_manager">Report Manager</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">M-NIST digit classifier</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Test suite</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/usage/test_suite.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="test-suite">
+<h1>Test suite<a class="headerlink" href="#test-suite" title="Permalink to this headline">¶</a></h1>
+<p>This package also comes bundled with a handy tool called the <strong>test suite</strong>. For example, if you want to compare several
+algorithms, or several different configurations of a same algorithm, you can do so directly by defining a
+test suite configuration file. Included in this repository is the <cite>test_suite_example.json</cite> file which shows an example
+of such a configuration. Let’s look at it here:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="s2">&quot;report_directory&quot;</span> <span class="p">:</span>  <span class="s2">&quot;test_suite&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;tests&quot;</span> <span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;type&quot;</span> <span class="p">:</span> <span class="s2">&quot;mlp&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;hidden_layers&quot;</span> <span class="p">:</span> <span class="s2">&quot;28 28 14&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;max_iter&quot;</span> <span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+      <span class="s2">&quot;verbose&quot;</span> <span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+      <span class="s2">&quot;save&quot;</span> <span class="p">:</span> <span class="s2">&quot;mlp.model&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;rf&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;trees&quot;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="s2">&quot;depth&quot;</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+      <span class="s2">&quot;save&quot;</span> <span class="p">:</span> <span class="s2">&quot;rf_shallow.model&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;rf&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;trees&quot;</span> <span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+      <span class="s2">&quot;depth&quot;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+      <span class="s2">&quot;save&quot;</span> <span class="p">:</span> <span class="s2">&quot;rf_deeper.model&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;report_directory&quot;</span> <span class="p">:</span> <span class="s2">&quot;test_suite_does_not_matter&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the first line is the first required element : <code class="docutils literal notranslate"><span class="pre">report_directory</span></code>,
+which is the folder name of the report you wish to create.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you enter a report directory which already exists, it will be uniquified with an incrementing value.</p>
+</div>
+<p>This will create a folder in a new <cite>reports</cite> folder with all the results of the test run inside.</p>
+<p>Next is the second required element : <code class="docutils literal notranslate"><span class="pre">tests</span></code> where all the test configurations live. It is an array of settings
+of algorithms which you can run one after another in a single pass, and collect all the results in a single folder. The
+parameters are exactly the same as in the <a class="reference internal" href="params.html"><span class="doc">algorithm parameters</span></a>.
+This particular test suite file runs three algorithms, one MLP and two Random Forests. When run with the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="o">-</span><span class="n">ts</span> <span class="n">test_suite_example</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>It runs all three algorithms one after another and creates an associated report folder:</p>
+<img alt="../_images/test_suite_folders.png" src="../_images/test_suite_folders.png" />
+<p>And inside the <code class="docutils literal notranslate"><span class="pre">report.csv</span></code> file, you will find results and configurations
+of all three algorithms for easy comparison.</p>
+<img alt="../_images/test_suite_results.png" src="../_images/test_suite_results.png" />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Saved models specified with the <code class="docutils literal notranslate"><span class="pre">save</span></code> keyword will also be saved in your report folder. However, if you want to
+use static seeds, you need to specify it for every algorithm in the list</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you specify the same model name for all your algorithms’ <code class="docutils literal notranslate"><span class="pre">save</span></code> keyword, it <strong>will</strong> be overwritten by each
+subsequent algorithm.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../api/api_ref.html" class="btn btn-neutral float-right" title="AlgorithmMeta" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="params.html" class="btn btn-neutral float-left" title="Algorithm Parameters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Calixte Mayoraz, Christian Sandrini
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

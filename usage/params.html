@@ -36,7 +36,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="AlgorithmMeta" href="../api/api_ref.html" />
+    <link rel="next" title="Test suite" href="test_suite.html" />
     <link rel="prev" title="Quick start" href="quickstart.html" /> 
 </head>
 
@@ -91,6 +91,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#common-parameters">Common parameters</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#save-model">Save model</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#load-model">Load model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#random-seed">Random Seed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#report-directory">Report Directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-suite">Test Suite</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#random-forest-parameters">Random Forest Parameters</a><ul>
@@ -109,11 +112,13 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="test_suite.html">Test suite</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html">AlgorithmMeta</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#randomforest">RandomForest</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#mlp">MLP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#dataset">Dataset</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#visualizer">Visualizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#module-mnist_classifier.report_manager">Report Manager</a></li>
 </ul>
 
             
@@ -183,13 +188,14 @@
 <h1>Algorithm Parameters<a class="headerlink" href="#algorithm-parameters" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="common-parameters">
 <h2>Common parameters<a class="headerlink" href="#common-parameters" title="Permalink to this headline">¶</a></h2>
-<p>All algorithms share two settings:</p>
+<p>All algorithms share a few settings.</p>
+<p>these parameters should be placed <strong>before</strong> the selected algorithm</p>
 <div class="section" id="save-model">
 <h3>Save model<a class="headerlink" href="#save-model" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">--save</span> <span class="pre">|</span> <span class="pre">-s</span></code></p>
 <p>Enter a filename for the model to save its trained state once it has finished training. It can be used for future use.
 Defaults to None</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">rf</span> <span class="o">--</span><span class="n">save</span> <span class="n">rf</span><span class="o">.</span><span class="n">model</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="o">--</span><span class="n">save</span> <span class="n">rf</span><span class="o">.</span><span class="n">model</span> <span class="n">rf</span>
 </pre></div>
 </div>
 </div>
@@ -197,12 +203,45 @@ Defaults to None</p>
 <h3>Load model<a class="headerlink" href="#load-model" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">--load</span> <span class="pre">|</span> <span class="pre">-l</span></code></p>
 <p>Enter a filename of an <strong>existing</strong> model which you have previously saved. Defaults to None</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">rf</span> <span class="o">--</span><span class="n">load</span> <span class="n">rf</span><span class="o">.</span><span class="n">model</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="o">--</span><span class="n">load</span> <span class="n">rf</span><span class="o">.</span><span class="n">model</span> <span class="n">rf</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you specified settings for your training and load a model, the loaded model’s settings will override your specified settings.</p>
+</div>
+</div>
+<div class="section" id="random-seed">
+<h3>Random Seed<a class="headerlink" href="#random-seed" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--random_seed</span> <span class="pre">|</span> <span class="pre">-rs</span></code></p>
+<p>If you want to make reproducible work, a random seed is vital. You can specify here a random seed as an integer.
+Defaults to None</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="o">-</span><span class="n">rs</span> <span class="mi">12345</span> <span class="n">rf</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="report-directory">
+<h3>Report Directory<a class="headerlink" href="#report-directory" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--report_directory</span> <span class="pre">|</span> <span class="pre">-rd</span></code></p>
+<p>Indicate the name of a folder to group all of your results. If this flag is included, the images generated by the script
+will be saved to disk in this folder, along with a CSV file of the accuracy results. If this flag is not set, the
+results are displayed on screen and not persisted. Defaults to None</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="o">-</span><span class="n">rd</span> <span class="n">my_report</span> <span class="n">rf</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="test-suite">
+<h3>Test Suite<a class="headerlink" href="#test-suite" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--test_suite</span> <span class="pre">|</span> <span class="pre">-ts</span></code></p>
+<p>Defines a test_suite configuration file to run multiple algorithms agains each other and compare results. Defaults to
+None. More info on test suites can be found <a class="reference internal" href="test_suite.html"><span class="doc">here</span></a></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="o">-</span><span class="n">ts</span> <span class="n">test_suite_example</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since the test suite contains all the settings for configuring and running algorithms, if this flag is present,
+any algorithm and/or configuration provided by the command-line will be ignored.</p>
 </div>
 </div>
 </div>
@@ -213,7 +252,7 @@ Defaults to None</p>
 <h3>Number of trees / estimators<a class="headerlink" href="#number-of-trees-estimators" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">--trees</span> <span class="pre">|</span> <span class="pre">-t</span></code></p>
 <p>Defines the number of trees the algorithm generates. Defaults to 20</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">rf</span> <span class="o">--</span><span class="n">trees</span> <span class="mi">10</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="n">rf</span> <span class="o">--</span><span class="n">trees</span> <span class="mi">10</span>
 </pre></div>
 </div>
 </div>
@@ -221,7 +260,7 @@ Defaults to None</p>
 <h3>Tree depth<a class="headerlink" href="#tree-depth" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">--depth</span> <span class="pre">|</span> <span class="pre">-d</span></code></p>
 <p>Defines how deep we allow the trees to grow. Defaults to 9</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">rf</span> <span class="o">--</span><span class="n">depth</span> <span class="mi">50</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="n">rf</span> <span class="o">--</span><span class="n">depth</span> <span class="mi">50</span>
 </pre></div>
 </div>
 </div>
@@ -244,7 +283,7 @@ Can either be <code class="docutils literal notranslate"><span class="pre">gini<
 <p>Defines how many hidden layers, and how many neurons per hidden layer to construct.
 Defaults to one hidden layer of 100 neurons
 For example, to build a model with three layers : 100 in the first, 25 in the second, and 15 in the third, you would use:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">hl</span> <span class="mi">100</span> <span class="mi">25</span> <span class="mi">15</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">hl</span> <span class="mi">100</span> <span class="mi">25</span> <span class="mi">15</span>
 </pre></div>
 </div>
 </div>
@@ -252,7 +291,7 @@ For example, to build a model with three layers : 100 in the first, 25 in the se
 <h3>Alpha bias<a class="headerlink" href="#alpha-bias" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">--alpha</span> <span class="pre">|</span> <span class="pre">-a</span></code></p>
 <p>Defines the alpha bias of the MLP. Defaults to 0.0001</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">a</span> <span class="mf">0.01</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">a</span> <span class="mf">0.01</span>
 </pre></div>
 </div>
 </div>
@@ -260,7 +299,7 @@ For example, to build a model with three layers : 100 in the first, 25 in the se
 <h3>Batch Size<a class="headerlink" href="#batch-size" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">--batch_size</span> <span class="pre">|</span> <span class="pre">-b</span></code></p>
 <p>Defines the size of the training batches. Defaults to 200</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">b</span> <span class="mi">50</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">b</span> <span class="mi">50</span>
 </pre></div>
 </div>
 </div>
@@ -270,7 +309,7 @@ For example, to build a model with three layers : 100 in the first, 25 in the se
 <p>Defines how many training iterations the algorithm should run before stopping training.
 Note that the algorithm might not do exactly this many iterations if no improvement is seen after several iterations.
 Defaults to 200.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">i</span> <span class="mi">10</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">i</span> <span class="mi">10</span>
 </pre></div>
 </div>
 </div>
@@ -278,7 +317,7 @@ Defaults to 200.</p>
 <h3>Verbose mode<a class="headerlink" href="#verbose-mode" title="Permalink to this headline">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">--verbose</span> <span class="pre">|</span> <span class="pre">-v</span></code></p>
 <p>Makes the algorithm print out each iteration step.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">v</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
 </div>
 </div>
@@ -293,7 +332,7 @@ Defaults to 200.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../api/api_ref.html" class="btn btn-neutral float-right" title="AlgorithmMeta" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="test_suite.html" class="btn btn-neutral float-right" title="Test suite" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="quickstart.html" class="btn btn-neutral float-left" title="Quick start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
