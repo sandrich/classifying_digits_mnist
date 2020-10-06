@@ -5,3 +5,7 @@ __pycache__/
 .coverage
 htmlcov
 sphinx/
+mlp.model
+dist/
+build/
+*.egg-info/

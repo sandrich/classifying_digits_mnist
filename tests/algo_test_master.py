@@ -5,7 +5,7 @@ from io import StringIO
 import os
 import pickle
 import sys
-from src.algorithm_meta import AlgorithmMeta
+from mnist_classifier.algorithm_meta import AlgorithmMeta
 from .test_dataset import load_data_and_cleanup
 TEST_MODEL_LOCATION = "tests/test.model"
 TEST_CACHE_LOCATION = "tests/cache.pkl"

@@ -22,12 +22,12 @@ jobs:
           name: Run linter
           command: |
             source activate mnist_classifier
-            pylint --output-format=colorized *.py src/ tests/
+            pylint --output-format=colorized *.py mnist_classifier/ tests/
       
       - run:
           command: |
             source activate mnist_classifier
-            coverage run --source src -m unittest discover
+            coverage run --source mnist_classifier -m unittest discover
             coverage report
             coverage html
             coveralls
