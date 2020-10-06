@@ -1,0 +1,25 @@
+{
+  "report_directory" :  "test_suite",
+  "tests" : [
+    {
+      "type" : "mlp",
+      "hidden_layers" : "28 28 14",
+      "max_iter" : 100,
+      "verbose" : true,
+      "save" : "mlp.model"
+    },
+    {
+      "type": "rf",
+      "trees" : 10,
+      "depth" : 5,
+      "save" : "rf_shallow.model"
+    },
+    {
+      "type": "rf",
+      "trees" : 20,
+      "depth" : 10,
+      "save" : "rf_deeper.model",
+      "report_directory" : "test_suite_doesn't matter because it'll be saved in the master report directory"
+    }
+  ]
+}

@@ -9,11 +9,18 @@ from src.random_forest import RandomForest
 from src.mlp import MLP
 
 
-def main():
+def main(*arguments):
     """
-    Main function
+    Main function. Parses the arguments and executes the appropriate algorithm(s).
+
+    Parameters
+    *arguments : list
+        potential arguments to be passed programmatically.
     """
-    parser = argparse.ArgumentParser(description='Run MNIST classifier')
+    parser = argparse.ArgumentParser(description='Run MNIST classifier',
+                                     epilog="Visit "
+                                            "https://sandrich.github.io/classifying_digits_mnist/usage/params.html "
+                                            "for a comprehensive explanation of these arguments.")
     subparsers = parser.add_subparsers(title="algorithms", help="Individual algorithms' options")
 
     # Global arguments
@@ -22,6 +29,10 @@ def main():
     parser.add_argument("--report_directory", '-rd', type=str,
                         help="An output directory where to save the report. "
                              "If the folder does not exist, it will be created", default=None)
+    parser.add_argument('--save', '-s', help="Indicate the filename to save the model to disk", default=None)
+    parser.add_argument('--load', '-l', help="Indicate the filename of a saved model to load", default=None)
+    parser.add_argument('--test_suite', '-ts', type=str,
+                        help="Indicate the location of a test suite configuration file", default=None)
 
     # Random Forest arguments
     rf_parser = subparsers.add_parser("rf", help="Use a Random Forest Classifier to train/test the data")
@@ -29,8 +40,6 @@ def main():
     rf_parser.add_argument('--depth', '-d', type=int, help='Maximum tree max_depth', default=9)
     rf_parser.add_argument('--impurity_method', '-i', help='Impurity method', default='entropy',
                            choices=['entropy', 'gini'])
-    rf_parser.add_argument('--save', '-s', help="Indicate the filename to save the model to disk", default=None)
-    rf_parser.add_argument('--load', '-l', help="Indicate the filename of a saved model to load", default=None)
 
     # MLP arguments
     mlp_parser = subparsers.add_parser('mlp', help="Use a MLP Classifier to train/test the data")
@@ -44,31 +53,52 @@ def main():
                             help="The number of maximum training iterations to perform", default=200)
     mlp_parser.add_argument('--verbose', '-v',
                             help="Show training iterations with losses while training", action="store_true")
-    mlp_parser.add_argument('--save', '-s', help="Indicate the filename to save the model to disk", default=None)
-    mlp_parser.add_argument('--load', '-l', help="Indicate the filename of a saved model to load", default=None)
 
-    args = parser.parse_args()
+    if len(arguments) == 0:
+        args = parser.parse_args()
+    else:
+        args = parser.parse_args(arguments)
 
+    if args.test_suite is not None:
+        test_suite = report_manager.load_test_suite_conf(args.test_suite)
+        for i, test in enumerate(test_suite):
+            args = parser.parse_args(test)
+            process_args_and_run(args, test_suite_iter=i)
+
+
+def process_args_and_run(args, test_suite_iter: int = None):
+    """
+    Takes the arguments from an argument parser, or a test_suite and runs the appropriate test.
+
+    Parameters
+    ----------
+    args : argparse.Namespace
+        the parsed arguments
+    test_suite_iter : int
+        if we are in a test suite, this is the test # of the suite, None if we are not in a suite.
+    """
     # load global arguments
     if args.save is not None and args.load is not None:
         print("Can't load and save a model at the same time... please choose just one of the two options")
         sys.exit(1)
-    if args.report_directory is not None:
-        args.report_directory = report_manager.prepare_report_dest(args.report_directory)
 
+    if test_suite_iter is None:
+        if args.report_directory is not None:
+            args.report_directory = report_manager.prepare_report_dest(args.report_directory)
     # Load dataset
     train_data, train_labels = dataset.load_train_data()
     test_data, test_labels = dataset.load_test_data()
-
     # Random Forest
     if all([param in args for param in ['depth', 'impurity_method', 'trees']]):
         rf_classifier = RandomForest(n_estimators=args.trees, max_depth=args.depth, criterion=args.impurity_method,
-                                     report_directory=args.report_directory)
+                                     report_directory=args.report_directory, test_suite_iter=test_suite_iter)
         rf_classifier.run_classification(train_data, train_labels, test_data, test_labels,
                                          args.save, args.load)
-
     if all([param in args for param in ['alpha', 'hidden_layers', 'max_iter', 'verbose']]):
         hidden_layers = []
+        # case when reading from a test suite where args.hidden_layers is just ['x y z'] and not ['x', 'y', 'z']
+        if len(args.hidden_layers) == 1:
+            args.hidden_layers = args.hidden_layers[0].split(" ")
         for layer in args.hidden_layers:
             try:
                 hidden_layers.append(int(layer))
@@ -83,7 +113,8 @@ def main():
                              batch_size=args.batch_size,
                              verbose=args.verbose,
                              random_seed=args.random_seed,
-                             report_directory=args.report_directory)
+                             report_directory=args.report_directory,
+                             test_suite_iter=test_suite_iter)
 
         mlp_classifier.run_classification(train_data, train_labels, test_data, test_labels,
                                           args.save, args.load)

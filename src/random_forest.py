@@ -12,7 +12,8 @@ class RandomForest(AlgorithmMeta):
     Random Forest which inherits from the AlgorithmMeta class
     """
 
-    def __init__(self, n_estimators, max_depth, criterion, random_seed: int = None, report_directory: str = None):
+    def __init__(self, n_estimators, max_depth, criterion, random_seed: int = None, report_directory: str = None,
+                 test_suite_iter: int = None):
         """
         Initiates the model with the correct configurations.
 
@@ -32,8 +33,11 @@ class RandomForest(AlgorithmMeta):
 
         report_directory : str
             Where to save the output images
+
+        test_suite_iter : int
+            The test suite number we're in right now. None if we are not in a test suite.
         """
-        super().__init__(report_directory)
+        super().__init__(report_directory, test_suite_iter=test_suite_iter)
         self.trees = n_estimators
         self.depth = max_depth
         self.impurity_method = criterion
@@ -73,6 +77,11 @@ class RandomForest(AlgorithmMeta):
 
     def display_results(self, cache, save_directory: str = None):
         super().display_results(cache)
-        rf_feature_importance_out = None if self.report_directory is None else \
-            os.path.join(self.report_directory, "RF_feature_importance.png")
+        if self.report_directory is None:
+            rf_feature_importance_out = None
+        elif self.test_suite_iter is None:
+            rf_features_importance_out = os.path.join(self.report_directory, "RF_feature_importance.png")
+        else:
+            rf_feature_importance_out = os.path.join(self.report_directory,
+                                                     f"{self.test_suite_iter}_RF_feature_importance.png")
         visualizer.display_rf_feature_importance(cache, save_location=rf_feature_importance_out)
