@@ -6,13 +6,17 @@ general:
       - gh-pages
 
 jobs:
-  build-and-test:
+  build-test-deploy:
     docker:
       - image: continuumio/miniconda3
    
     steps:
       - checkout
-            
+
+      - add_ssh_keys:
+          fingerprints:
+            - "ea:b2:4f:55:9f:41:22:c5:7c:9f:b9:b1:91:e1:64:59" 
+
       - run:
           name: install dependencies
           command: |
@@ -35,26 +39,11 @@ jobs:
 
       - store_artifacts:
           path: htmlcov
-
-  deploy-docs:
-    docker:
-      - image: python:3.6
-   
-    steps:
-      - checkout
-
-      - add_ssh_keys:
-          fingerprints:
-            - "ea:b2:4f:55:9f:41:22:c5:7c:9f:b9:b1:91:e1:64:59"
-            
-      - run:
-          name: install dependencies
-          command: |
-            pip install sphinx sphinx-rtd-theme ghp-import
       
       - run:
-          name: Build and deploy
+          name: Build and deploy docs
           command: |
+            source activate mnist_classifier
             sphinx-build doc sphinx
             ghp-import -m "Update docs [ci skip]" --no-jekyll sphinx/
             git config user.email "ci-build@chrissandrini.ch"
@@ -64,5 +53,4 @@ jobs:
 workflows:
   main:
     jobs:
-      - build-and-test
-      - deploy-docs
+      - build-test-deploy
