@@ -1,5 +1,6 @@
 ![CircleCI](https://img.shields.io/circleci/build/github/sandrich/classifying_digits_mnist/master)
 [![Coverage Status](https://coveralls.io/repos/github/sandrich/classifying_digits_mnist/badge.svg?branch=master)](https://coveralls.io/github/sandrich/classifying_digits_mnist?branch=master)
+[![Generic badge](https://img.shields.io/badge/doc-latest-orange.svg)](https://sandrich.github.io/classifying_digits_mnist/)
 ![GitHub](https://img.shields.io/github/license/sandrich/classifying_digits_mnist)
 ![GitHub issues](https://img.shields.io/github/issues/sandrich/classifying_digits_mnist)
 
