@@ -48,6 +48,8 @@ jobs:
           command: |
             sphinx-build doc sphinx
             ghp-import -m "Update docs" --no-jekyll sphinx/
+            git config user.email "ci-build@chrissandrini.ch"
+            git config user.name "ci-build"
             git push origin gh-pages
 
       - add_ssh_keys:
