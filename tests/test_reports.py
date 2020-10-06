@@ -5,7 +5,7 @@ import random
 import shutil
 import string
 import unittest
-from src import report_manager
+from mnist_classifier import report_manager
 
 CORRECT_CONF_FILE = "tests/correct_conf.json"
 NO_REPORT_DIR_CONF_FILE = "tests/no_report_conf.json"
