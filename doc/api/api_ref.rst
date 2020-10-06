@@ -2,33 +2,41 @@
 AlgorithmMeta
 =============
 
-.. autoclass:: src.algorithm_meta.AlgorithmMeta
+.. autoclass:: mnist_classifier.algorithm_meta.AlgorithmMeta
     :members:
 
 ============
 RandomForest
 ============
 
-.. autoclass:: src.random_forest.RandomForest
+.. autoclass:: mnist_classifier.random_forest.RandomForest
     :members:
 
 ===
 MLP
 ===
 
-.. autoclass:: src.mlp.MLP
+.. autoclass:: mnist_classifier.mlp.MLP
     :members:
 
 =======
 Dataset
 =======
 
-.. automodule:: src.dataset
+.. automodule:: mnist_classifier.dataset
     :members:
 
 ==========
 Visualizer
 ==========
 
-.. automodule:: src.visualizer
+.. automodule:: mnist_classifier.visualizer
+    :members:
+
+
+==============
+Report Manager
+==============
+
+.. automodule:: mnist_classifier.report_manager
     :members:

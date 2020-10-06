@@ -46,6 +46,9 @@ class AlgorithmTestMaster:
         """Removes any created models, cache files, folders, or images from disk"""
         if os.path.exists(TEST_FOLDER):
             shutil.rmtree(TEST_FOLDER)
+        for file in [TEST_MODEL_LOCATION, TEST_CACHE_LOCATION]:
+            if os.path.exists(file):
+                os.remove(file)
 
     def set_up_trained_model(self, save_cache=False, save_model=False):
         """Runs a quick training of the model in case it is needed. can also save the model or the output"""
