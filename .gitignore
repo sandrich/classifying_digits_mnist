@@ -9,3 +9,4 @@ mlp.model
 dist/
 build/
 *.egg-info/
+reports/
