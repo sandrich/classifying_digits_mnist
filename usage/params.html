@@ -1,0 +1,344 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Algorithm Parameters &mdash; M-NIST digit classifier  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="AlgorithmMeta" href="../api/api_ref.html" />
+    <link rel="prev" title="Quick start" href="quickstart.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> M-NIST digit classifier
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart.html">Quick start</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Algorithm Parameters</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#common-parameters">Common parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#save-model">Save model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-model">Load model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#random-forest-parameters">Random Forest Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#number-of-trees-estimators">Number of trees / estimators</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tree-depth">Tree depth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#impurity-method">Impurity method</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mlp-parameters">MLP Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hidden-layers">Hidden layers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#alpha-bias">Alpha bias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#batch-size">Batch Size</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#maximum-iterations">Maximum iterations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#verbose-mode">Verbose mode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html">AlgorithmMeta</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#randomforest">RandomForest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#mlp">MLP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#module-src.dataset">Dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/api_ref.html#module-src.visualizer">Visualizer</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">M-NIST digit classifier</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Algorithm Parameters</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/usage/params.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="algorithm-parameters">
+<h1>Algorithm Parameters<a class="headerlink" href="#algorithm-parameters" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="common-parameters">
+<h2>Common parameters<a class="headerlink" href="#common-parameters" title="Permalink to this headline">¶</a></h2>
+<p>All algorithms share two settings:</p>
+<div class="section" id="save-model">
+<h3>Save model<a class="headerlink" href="#save-model" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--save</span> <span class="pre">|</span> <span class="pre">-s</span></code></p>
+<p>Enter a filename for the model to save its trained state once it has finished training. It can be used for future use.
+Defaults to None</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">rf</span> <span class="o">--</span><span class="n">save</span> <span class="n">rf</span><span class="o">.</span><span class="n">model</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="load-model">
+<h3>Load model<a class="headerlink" href="#load-model" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--load</span> <span class="pre">|</span> <span class="pre">-l</span></code></p>
+<p>Enter a filename of an <strong>existing</strong> model which you have previously saved. Defaults to None</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">rf</span> <span class="o">--</span><span class="n">load</span> <span class="n">rf</span><span class="o">.</span><span class="n">model</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you specified settings for your training and load a model, the loaded model’s settings will override your specified settings.</p>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="random-forest-parameters">
+<h2>Random Forest Parameters<a class="headerlink" href="#random-forest-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="number-of-trees-estimators">
+<h3>Number of trees / estimators<a class="headerlink" href="#number-of-trees-estimators" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--trees</span> <span class="pre">|</span> <span class="pre">-t</span></code></p>
+<p>Defines the number of trees the algorithm generates. Defaults to 20</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">rf</span> <span class="o">--</span><span class="n">trees</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tree-depth">
+<h3>Tree depth<a class="headerlink" href="#tree-depth" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--depth</span> <span class="pre">|</span> <span class="pre">-d</span></code></p>
+<p>Defines how deep we allow the trees to grow. Defaults to 9</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">rf</span> <span class="o">--</span><span class="n">depth</span> <span class="mi">50</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="impurity-method">
+<h3>Impurity method<a class="headerlink" href="#impurity-method" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--impurity_method</span> <span class="pre">|</span> <span class="pre">-i</span></code></p>
+<p>Defines which impurity method to use when deciding which parameter to select for a split.
+Can either be <code class="docutils literal notranslate"><span class="pre">gini</span></code> or <code class="docutils literal notranslate"><span class="pre">entropy</span></code>, Defaults to <code class="docutils literal notranslate"><span class="pre">entropy</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span> <span class="n">rf</span> <span class="o">-</span><span class="n">i</span> <span class="n">gini</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="mlp-parameters">
+<h2>MLP Parameters<a class="headerlink" href="#mlp-parameters" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="hidden-layers">
+<h3>Hidden layers<a class="headerlink" href="#hidden-layers" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--hidden_layers</span> <span class="pre">|</span> <span class="pre">-hl</span></code></p>
+<p>Defines how many hidden layers, and how many neurons per hidden layer to construct.
+Defaults to one hidden layer of 100 neurons
+For example, to build a model with three layers : 100 in the first, 25 in the second, and 15 in the third, you would use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">hl</span> <span class="mi">100</span> <span class="mi">25</span> <span class="mi">15</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="alpha-bias">
+<h3>Alpha bias<a class="headerlink" href="#alpha-bias" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--alpha</span> <span class="pre">|</span> <span class="pre">-a</span></code></p>
+<p>Defines the alpha bias of the MLP. Defaults to 0.0001</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">a</span> <span class="mf">0.01</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="batch-size">
+<h3>Batch Size<a class="headerlink" href="#batch-size" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--batch_size</span> <span class="pre">|</span> <span class="pre">-b</span></code></p>
+<p>Defines the size of the training batches. Defaults to 200</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">b</span> <span class="mi">50</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="maximum-iterations">
+<h3>Maximum iterations<a class="headerlink" href="#maximum-iterations" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--max_iter</span> <span class="pre">|</span> <span class="pre">-i</span></code></p>
+<p>Defines how many training iterations the algorithm should run before stopping training.
+Note that the algorithm might not do exactly this many iterations if no improvement is seen after several iterations.
+Defaults to 200.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">i</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="verbose-mode">
+<h3>Verbose mode<a class="headerlink" href="#verbose-mode" title="Permalink to this headline">¶</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">--verbose</span> <span class="pre">|</span> <span class="pre">-v</span></code></p>
+<p>Makes the algorithm print out each iteration step.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">mnist_classifier</span><span class="o">.</span><span class="n">py</span> <span class="n">mlp</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../api/api_ref.html" class="btn btn-neutral float-right" title="AlgorithmMeta" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="quickstart.html" class="btn btn-neutral float-left" title="Quick start" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Calixte Mayoraz, Christian Sandrini
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
