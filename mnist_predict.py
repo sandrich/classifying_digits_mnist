@@ -15,6 +15,10 @@ def main():
     parser = argparse.ArgumentParser(description='Run MNIST classifier')
     subparsers = parser.add_subparsers(title="algorithms", help="Individual algorithms' options")
 
+    # Global arguments
+    parser.add_argument("--random_seed", "-rs", type=int,
+                        help="Defines a random seed to reproduce arguments", default=None)
+
     # Random Forest arguments
     rf_parser = subparsers.add_parser("rf", help="Use a Random Forest Classifier to train/test the data")
     rf_parser.add_argument('--trees', '-t', type=int, help='Number of n_estimators', default=20)
@@ -41,35 +45,37 @@ def main():
 
     args = parser.parse_args()
 
-    if args.save_RF is not None and args.load_RF is not None:
+    if args.save is not None and args.load is not None:
         print("Can't load and save a model at the same time... please choose just one of the two options")
         sys.exit(1)
-    if args.save_MLP is not None and args.load_MLP is not None:
-        print("Can't load and save a model at the same time... please choose just one of the two options")
-        sys.exit(1)
-
-    hidden_layers = []
-    for layer in args.hidden_layers:
-        try:
-            hidden_layers.append(int(layer))
-        except ValueError:
-            print(f"Can't set a hidden layer value of {layer}. Please enter an integer value")
-            sys.exit(1)
-    args.hidden_layers = tuple(hidden_layers)
 
     # Load dataset
     train_data, train_labels = dataset.load_train_data()
     test_data, test_labels = dataset.load_test_data()
 
     # Random Forest
-    if args.rf:
+    if all([param in args for param in ['depth', 'impurity_method', 'trees']]):
         rf_classifier = RandomForest(n_estimators=args.trees, max_depth=args.depth, criterion=args.impurity_method)
         rf_classifier.run_classification(train_data, train_labels, test_data, test_labels,
                                          args.save, args.load)
 
-    if args.mlp:
-        mlp_classifier = MLP(hidden_layer_sizes=args.hidden_layers, alpha=args.alpha,
-                             max_iter=args.max_iter, batch_size=args.batch_size)
+    if all([param in args for param in ['alpha', 'hidden_layers', 'max_iter', 'verbose']]):
+        hidden_layers = []
+        for layer in args.hidden_layers:
+            try:
+                hidden_layers.append(int(layer))
+            except ValueError:
+                print(f"Can't set a hidden layer value of {layer}. Please enter an integer value")
+                sys.exit(1)
+        args.hidden_layers = tuple(hidden_layers)
+
+        mlp_classifier = MLP(hidden_layer_sizes=args.hidden_layers,
+                             alpha=args.alpha,
+                             max_iter=args.max_iter,
+                             batch_size=args.batch_size,
+                             verbose=args.verbose,
+                             random_seed=args.random_seed)
+
         mlp_classifier.run_classification(train_data, train_labels, test_data, test_labels,
                                           args.save, args.load)
 

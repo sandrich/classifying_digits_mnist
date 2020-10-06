@@ -13,15 +13,24 @@ class MLP(AlgorithmMeta):
     """
 
     def __init__(self, hidden_layer_sizes: tuple = (10, 10, 10), alpha: float = 0.0001,
-                 batch_size='auto', max_iter: int = 200):
+                 batch_size='auto', max_iter: int = 200, verbose: bool = False, random_seed: int=None):
         """
         Initializes the MLP model
-        :param hidden_layer_sizes: the number of neurons in each hidden layer.
-        For example, (100,200,100) will have three hidden layers. Layer 0 will have 100 neurons, layer 1 will have 200,
-        and layer 2 will have 100. These hidden layers are the ones between the input and output layers.
-        :param alpha: regularization term parameter
-        :param batch_size: the size of minibatches for stochastic optimizers.
-        :param max_iter: maximum number of training iterations to perform while training.
+
+        Parameters
+        ----------
+        hidden_layer_sizes : tuple
+            the number of neurons in each hidden layer. the length of the tuple determines the number of hidden layers
+        alpha : float
+            the alpha bias of the network
+        batch_size : int
+            the number of samples per training batch. Can be a specific integer or "auto" to let the algorithm decide.
+        max_iter : int
+            the maximum number of training iterations the algorithm should perform.
+        verbose : bool
+            whether or not to print out the training iterations
+        random_seed : int
+            a random seed to make results reproducible. if none, no random seed is used
         """
         super().__init__()
 
@@ -45,8 +54,8 @@ class MLP(AlgorithmMeta):
             alpha=alpha,
             batch_size=batch_size,
             max_iter=max_iter,
-            verbose=True,
-            random_state=12345)  # static random seed
+            verbose=verbose,
+            random_state=random_seed)
 
     def load_model(self, filepath):
         super().load_model(filepath)

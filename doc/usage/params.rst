@@ -4,7 +4,10 @@ Algorithm Parameters
 
 Common parameters
 =================
-All algorithms share two settings:
+All algorithms share a few settings.
+
+.. NOTE::
+these parameters should be placed **before** the selected algorithm
 
 Save model
 ^^^^^^^^^^
@@ -14,7 +17,7 @@ Save model
 Enter a filename for the model to save its trained state once it has finished training. It can be used for future use.
 Defaults to None
 ::
-    python mnist_classifier.py rf --save rf.model
+    python mnist_classifier.py --save rf.model rf
 
 
 Load model
@@ -23,7 +26,7 @@ Load model
 
 Enter a filename of an **existing** model which you have previously saved. Defaults to None
 ::
-    python mnist_classifier.py rf --load rf.model
+    python mnist_classifier.py --load rf.model rf
 
 
 .. NOTE::

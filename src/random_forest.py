@@ -12,7 +12,7 @@ class RandomForest(AlgorithmMeta):
     Random Forest which inherits from the AlgorithmMeta class
     """
 
-    def __init__(self, n_estimators, max_depth, criterion):
+    def __init__(self, n_estimators, max_depth, criterion, random_seed: int = None):
         """
         Initiates the model with the correct configurations.
 
@@ -26,6 +26,9 @@ class RandomForest(AlgorithmMeta):
 
         criterion : str
             the split criterion for the trees in the forest. Can either be `gini` or`entropy`
+
+        random_seed : int
+            a random seed to make reproducible results. if None, no random seed is used.
         """
         super().__init__()
         self.trees = n_estimators
@@ -45,7 +48,7 @@ class RandomForest(AlgorithmMeta):
             n_estimators=n_estimators,
             max_depth=max_depth,
             criterion=criterion,
-            random_state=12345)  # static random seed
+            random_state=random_seed)
 
     def load_model(self, filepath):
         super().load_model(filepath)
