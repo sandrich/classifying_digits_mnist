@@ -27,7 +27,7 @@ jobs:
       - run:
           command: |
             source activate mnist_classifier
-            coverage run --source src -m unittest discover
+            coverage run --source mnist_classifier -m unittest discover
             coverage report
             coverage html
             coveralls
