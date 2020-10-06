@@ -6,9 +6,9 @@ saved in the correct spot, and that they have the right subplots, titles, and ax
 """
 import unittest
 import os
-from src.random_forest import RandomForest
-from src.mlp import MLP
-from src.visualizer import display_mlp_coefficients, \
+from mnist_classifier.random_forest import RandomForest
+from mnist_classifier.mlp import MLP
+from mnist_classifier.visualizer import display_mlp_coefficients, \
     display_loss_curve, \
     display_train_test_matrices, \
     display_rf_feature_importance

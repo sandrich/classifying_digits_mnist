@@ -6,7 +6,7 @@ import os
 import pickle
 import shutil
 import sys
-from src.algorithm_meta import AlgorithmMeta
+from mnist_classifier.algorithm_meta import AlgorithmMeta
 from .test_dataset import load_data_and_cleanup
 TEST_FOLDER = os.path.join("reports", "test_outputs")
 TEST_MODEL_LOCATION = "test.model"

@@ -3,10 +3,10 @@ Entry point script
 """
 import argparse
 import sys
-from src import dataset
-from src import report_manager
-from src.random_forest import RandomForest
-from src.mlp import MLP
+from mnist_classifier import dataset
+from mnist_classifier import report_manager
+from mnist_classifier.random_forest import  RandomForest
+from mnist_classifier.mlp import MLP
 
 
 def main(*arguments):

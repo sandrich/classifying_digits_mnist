@@ -5,7 +5,7 @@ import sys
 import os
 import unittest
 import numpy as np
-from src import dataset
+from mnist_classifier import dataset
 
 sys.path.append('..')
 
