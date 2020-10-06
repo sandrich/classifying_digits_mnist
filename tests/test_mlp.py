@@ -3,7 +3,7 @@ MLP class tests
 """
 import unittest
 from mnist_classifier.mlp import MLP
-from .algo_test_master import AlgorithmTestMaster, EXP_PRINT_OUTPUT_BASE
+from .algo_test_master import AlgorithmTestMaster, EXP_PRINT_OUTPUT_BASE, TEST_FOLDER
 
 
 class MLPTestCase(unittest.TestCase, AlgorithmTestMaster):
@@ -12,11 +12,11 @@ class MLPTestCase(unittest.TestCase, AlgorithmTestMaster):
     @classmethod
     def setUpClass(self):
         super().load_test_datasets(self)
-        self.test_model = MLP(hidden_layer_sizes=(28, 28), max_iter=20)
+        self.test_model = MLP(hidden_layer_sizes=(28, 28), max_iter=20, report_directory=TEST_FOLDER, random_seed=12345)
 
     @classmethod
     def tearDownClass(self):
-        super().tear_down(self)
+        super().tear_down_class(self)
 
     def test_setup_errors(self):
         """Test all the MLP setup errors"""

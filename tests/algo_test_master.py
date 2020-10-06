@@ -4,12 +4,14 @@ Master Class for tests testing algorithms
 from io import StringIO
 import os
 import pickle
+import shutil
 import sys
 from mnist_classifier.algorithm_meta import AlgorithmMeta
 from .test_dataset import load_data_and_cleanup
-TEST_MODEL_LOCATION = "tests/test.model"
-TEST_CACHE_LOCATION = "tests/cache.pkl"
-TEST_FOLDER = "tests/test_outputs/"
+TEST_FOLDER = os.path.join("reports", "test_outputs")
+TEST_MODEL_LOCATION = "test.model"
+TEST_CACHE_LOCATION = "cache.pkl"
+
 EXP_PRINT_OUTPUT_BASE = "Classification stats:\n"\
                           "-----------------\n"\
                           "Train Accuracy: {0:.3f}\n"\
@@ -35,17 +37,18 @@ class AlgorithmTestMaster:
         self.train_labels = labels[:500]
         self.test_labels = labels[501:511]
         self.test_data = data[501:511]
+        if not os.path.exists("reports"):
+            os.mkdir("reports")
+        if not os.path.exists(TEST_FOLDER):
+            os.mkdir(TEST_FOLDER)
 
-    def tear_down(self):
+    def tear_down_class(self):
         """Removes any created models, cache files, folders, or images from disk"""
-        if os.path.exists(TEST_MODEL_LOCATION):
-            os.remove(TEST_MODEL_LOCATION)
-        if os.path.exists(TEST_CACHE_LOCATION):
-            os.remove(TEST_CACHE_LOCATION)
         if os.path.exists(TEST_FOLDER):
-            for file in os.listdir(TEST_FOLDER):
-                os.remove(os.path.join(TEST_FOLDER, file))
-            os.removedirs(TEST_FOLDER)
+            shutil.rmtree(TEST_FOLDER)
+        for file in [TEST_MODEL_LOCATION, TEST_CACHE_LOCATION]:
+            if os.path.exists(file):
+                os.remove(file)
 
     def set_up_trained_model(self, save_cache=False, save_model=False):
         """Runs a quick training of the model in case it is needed. can also save the model or the output"""
@@ -117,7 +120,7 @@ class AlgorithmTestMaster:
         raised = False
         try:
             self.set_up_trained_model(save_model=True)
-            self.test_model.load_model(TEST_MODEL_LOCATION)
+            self.test_model.load_model(os.path.join(TEST_FOLDER, TEST_MODEL_LOCATION))
         except Exception as error:
             print(error)
             raised = True
@@ -135,8 +138,7 @@ class AlgorithmTestMaster:
                 train_data=self.train_data,
                 train_labels=self.train_labels,
                 test_data=self.test_data,
-                test_labels=self.test_labels,
-                save_directory=TEST_FOLDER)
+                test_labels=self.test_labels)
         except Exception as error:
             print(error)
             raised = True
