@@ -8,14 +8,9 @@ from mnist_classifier import report_manager
 from mnist_classifier.random_forest import RandomForest
 from mnist_classifier.mlp import MLP
 
-
-def main(*arguments):
+def parse_args(args):
     """
-    Main function. Parses the arguments and executes the appropriate algorithm(s).
-
-    Parameters
-    *arguments : list
-        potential arguments to be passed programmatically.
+    Parses the arguments
     """
     parser = argparse.ArgumentParser(description='Run MNIST classifier',
                                      epilog="Visit "
@@ -48,24 +43,39 @@ def main(*arguments):
                             default=['100'])
     mlp_parser.add_argument('--alpha', '-a', type=float, help="the alpha bias of the MLP", default=0.0001)
     mlp_parser.add_argument('--batch_size', '-b', help="The batch size of training. you can specify a number or 'auto'",
-                            default='auto')
+                            default='auto', type=int)
     mlp_parser.add_argument('--max_iter', '-i', type=int,
                             help="The number of maximum training iterations to perform", default=200)
     mlp_parser.add_argument('--verbose', '-v',
                             help="Show training iterations with losses while training", action="store_true")
 
-    if len(arguments) == 0:
-        args = parser.parse_args()
-    else:
-        args = parser.parse_args(arguments)
+    return parser.parse_args(args)
+
+
+def main(*arguments):
+    """
+    Main function. Parses the arguments and executes the appropriate algorithm(s).
+
+    Parameters
+    *arguments : list
+        potential arguments to be passed programmatically.
+    """
+    args = parse_args(*arguments)
 
     if args.test_suite is not None:
         test_suite = report_manager.load_test_suite_conf(args.test_suite)
         for i, test in enumerate(test_suite):
-            args = parser.parse_args(test)
+            args = parse_args(test)
             process_args_and_run(args, test_suite_iter=i)
     else:
         process_args_and_run(args)
+
+def load_report_directory(args):
+    """
+    Loads report directory if exists
+    """
+    args.report_directory = report_manager.prepare_report_dest(args.report_directory)
+    return args
 
 def process_args_and_run(args, test_suite_iter: int = None):
     """
@@ -84,8 +94,8 @@ def process_args_and_run(args, test_suite_iter: int = None):
         sys.exit(1)
 
     if test_suite_iter is None:
-        if args.report_directory is not None:
-            args.report_directory = report_manager.prepare_report_dest(args.report_directory)
+        load_report_directory(args)
+
     # Load dataset
     train_data, train_labels = dataset.load_train_data()
     test_data, test_labels = dataset.load_test_data()
