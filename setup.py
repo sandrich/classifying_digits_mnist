@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 from setuptools.command.install import install
 
 # circleci.py version
-VERSION = "1.0.2"
+VERSION = "1.0.3"
 
 def load_requirements(file):
     """
