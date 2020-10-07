@@ -50,11 +50,12 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            pip install sphinx sphinx-rtd-theme ghp-import
+            conda env create -f environment.yml
       
       - run:
           name: Build and deploy
           command: |
+            source activate mnist_classifier
             sphinx-build doc sphinx
             ghp-import -m "Update docs [ci skip]" --no-jekyll sphinx/
             git config user.email "ci-build@chrissandrini.ch"
