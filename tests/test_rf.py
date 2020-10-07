@@ -46,7 +46,7 @@ class RFTestCase(unittest.TestCase, AlgorithmTestMaster):
     def test_print_results(self):
         """Tests the printout method of the algorithm"""
         calculated = super().predict_and_print()
-        self.assertEqual(calculated, EXP_PRINT_OUTPUT_BASE.format(.18, .1, self.test_model.model.train_time) +
+        self.assertEqual(calculated, EXP_PRINT_OUTPUT_BASE.format(.18, .1, 0.186, self.test_model.model.train_time) +
                          "Max tree max_depth: 1\n"
                          "Number of n_estimators: 1\n"
                          "Impurity method: entropy\n")

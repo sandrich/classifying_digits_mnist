@@ -16,7 +16,8 @@ EXP_PRINT_OUTPUT_BASE = "Classification stats:\n"\
                           "-----------------\n"\
                           "Train Accuracy: {0:.3f}\n"\
                           "Test  Accuracy: {1:.3f}\n"\
-                          "Training time : {2:.2f}s\n"\
+                          "Test Standard Error: {2:.3f}\n"\
+                          "Training time : {3:.2f}s\n"\
                           "-----------------\n"
 
 

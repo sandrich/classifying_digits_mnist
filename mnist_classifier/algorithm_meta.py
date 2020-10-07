@@ -110,6 +110,32 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
             filepath = os.path.join(self.report_directory, filepath)
         pickle.dump(self.model, open(filepath, 'wb'))
 
+    @staticmethod
+    def calc_standard_error(error: float, sample_count: int):
+        """
+        Calculates the Wilson score interval with 95% confidence, based on the paper by Edwin B. Wilson [#]_.
+
+        .. [#] Edwin B. Wilson (1927) Probable Inference, the Law of Succession, and Statistical Inference,
+           Journal of the American Statistical Association
+
+        We interpret the results as the +/- of the error rate of the algorithm. For example,
+        an error rate of 0.02 with 50 samples and a confidence of 95% yields 0.0388. So the error rate can be
+        read as 0.02 +/- 0.0388.
+
+        Parameters
+        ----------
+        error : float
+            the error rate of the test results
+        sample_count : int
+            the number of test samples used
+
+        Returns
+        -------
+        float
+            the standard error
+        """
+        return 1.96 * (error * (1.-error)/sample_count)**0.5  # using 1.96 as a constant for 95% confidence interval
+
     def print_results(self, cache):
         """
         Prints the results of the classification, and returns them as a pandas DataFrame
@@ -124,16 +150,20 @@ class AlgorithmMeta(BaseEstimator, ClassifierMixin):
         pandas.DataFrame:
             the classification results as a single-line data frame
         """
+        standard_error = AlgorithmMeta.calc_standard_error(1-cache['accuracy']['test'], len(cache['actual']['test']))
+
         print('Classification stats:')
         print('-----------------')
         print('Train Accuracy: {0:.3f}'.format(cache['accuracy']['train']))
         print('Test  Accuracy: {0:.3f}'.format(cache['accuracy']['test']))
+        print('Test Standard Error: {0:.3f}'.format(standard_error))
         print('Training time : {0:.2f}s'.format(self.model.train_time))
 
         out = DataFrame.from_dict({
             "Algorithm": [self.__class__.__name__],
             "Train accuracy": [cache['accuracy']['train']],
             "Test accuracy": [cache['accuracy']['test']],
+            "Standard Error": [standard_error],
             "Training time (s)": [self.model.train_time]
         })
         if self.test_suite_iter is not None:
