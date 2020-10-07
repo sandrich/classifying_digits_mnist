@@ -6,20 +6,31 @@
       "hidden_layers" : "28 28 14",
       "max_iter" : 100,
       "verbose" : true,
+      "random_seed" : 1,
       "save" : "mlp.model"
+    },
+    {
+      "type" : "mlp",
+      "hidden_layers" : "100 50",
+      "max_iter" : 200,
+      "verbose" : true,
+      "random_seed" : 1,
+      "save" : "mlp_2.model"
     },
     {
       "type": "rf",
       "trees" : 10,
       "depth" : 5,
+      "random_seed" : 1,
       "save" : "rf_shallow.model"
     },
     {
       "type": "rf",
-      "trees" : 20,
-      "depth" : 10,
+      "trees" : 50,
+      "depth" : 100,
       "save" : "rf_deeper.model",
-      "report_directory" : "test_suite_doesn't matter because it'll be saved in the master report directory"
+      "random_seed" : 1,
+      "report_directory" : "test_suite_doesn't matter here because it'll be saved in the master report directory"
     }
   ]
 }
