@@ -38,7 +38,7 @@ jobs:
 
   deploy-docs:
     docker:
-      - image: python:3.6
+      - image: continuumio/miniconda3
 
     steps:
       - checkout
