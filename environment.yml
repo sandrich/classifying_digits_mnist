@@ -25,3 +25,4 @@ dependencies:
   - twine
   - setuptools
   - wheel
+  - mock=4.0.2
