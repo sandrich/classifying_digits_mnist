@@ -4,8 +4,13 @@ Package setup
 #!/usr/bin/env python
 # coding=utf-8
 
+import os
+import sys
 from setuptools import setup, find_packages
+from setuptools.command.install import install
 
+# circleci.py version
+VERSION = "1.0.2"
 
 def load_requirements(file):
     """
@@ -14,10 +19,23 @@ def load_requirements(file):
     retval = [str(k.strip()) for k in open(file, "rt")]
     return [k for k in retval if k and k[0] not in ("#", "-")]
 
+class VerifyVersionCommand(install):
+    """Custom command to verify that the git tag matches our version"""
+    description = 'verify that the git tag matches our version'
+
+    def run(self):
+        tag = os.getenv('CIRCLE_TAG')
+
+        if tag != VERSION:
+            info = "Git tag: {0} does not match the version of this app: {1}".format(
+                tag, VERSION
+            )
+            sys.exit(info)
+
 
 setup(
     name="mnist-classifier",
-    version="1.0.0",
+    version=VERSION,
     description="Basic mnist classifier example of a Reproducible Research Project in Python",
     url="https://github.com/sandrich/classifying_digits_mnist",
     license="MIT",
@@ -38,4 +56,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
+    cmdclass={
+        'verify': VerifyVersionCommand,
+    }
 )
