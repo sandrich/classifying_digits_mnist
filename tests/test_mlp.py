@@ -52,7 +52,7 @@ class MLPTestCase(unittest.TestCase, AlgorithmTestMaster):
     def test_print_results(self):
         """Tests the print output of the algorithm's print_results() function"""
         calculated = super().predict_and_print()
-        self.assertEqual(calculated, EXP_PRINT_OUTPUT_BASE.format(.802, .5, self.test_model.model.train_time) + \
+        self.assertEqual(calculated, EXP_PRINT_OUTPUT_BASE.format(.802, .5, 0.31, self.test_model.model.train_time) +
                          "Hidden-layer neuron count: 28, 28\n"
                          "Alpha: 0.0001\n"
                          "Batch size: auto\n"
