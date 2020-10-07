@@ -1,0 +1,321 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Results &mdash; M-NIST digit classifier  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Extending this package" href="extension.html" />
+    <link rel="prev" title="Test suite" href="usage/test_suite.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> M-NIST digit classifier
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage/installation.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/installation.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/params.html">Algorithm Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/test_suite.html">Test suite</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Results</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hypothesis">Hypothesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conclusion">Conclusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#future-works">Future Works</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extension.html">Extending this package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/api_ref.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">M-NIST digit classifier</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Results</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/results.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="results">
+<h1>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This project was done within the scope of a class in Artificial Intelligence given by
+<a class="reference external" href="https://distanceuniversity.ch/artificial-intelligence/master/">UniDistance</a> and the
+<a class="reference external" href="https://www.idiap.ch/en">Idiap Research Institute</a>. It is merely an exercise on reproducibility and in no way
+published work, and should not be interpreted as such.</p>
+</div>
+<div class="section" id="hypothesis">
+<h2>Hypothesis<a class="headerlink" href="#hypothesis" title="Permalink to this headline">¶</a></h2>
+<p>Our hypothesis which initiated the project the following:</p>
+<blockquote>
+<div><p><em>Random Forests can give similar resulting prediction models to MLP Neural Networks on the M-NIST digit dataset in
+significantly less time.</em></p>
+</div></blockquote>
+<p>To test this, we elaborated this project, which pulls data from the
+<a class="reference external" href="http://yann.lecun.com/exdb/mnist/">M-NIST digit dataset</a>, trains and tests different algorithms with different
+configurations and provides reports to compare the algorithms.</p>
+<p>By running our code with the simple command</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mnist</span><span class="o">-</span><span class="n">predict</span> <span class="o">-</span><span class="n">ts</span> <span class="n">test_suite_example</span><span class="o">.</span><span class="n">json</span>
+</pre></div>
+</div>
+<p>We can observe these results.
+A partial view (without redundant algorithm parameters) of the generated report is the following table :</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 16%" />
+<col style="width: 18%" />
+<col style="width: 16%" />
+<col style="width: 18%" />
+<col style="width: 21%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Iteration</p></th>
+<th class="head"><p>Algorithm</p></th>
+<th class="head"><p>Train Accuracy</p></th>
+<th class="head"><p>Test Accuracy</p></th>
+<th class="head"><p>Standard Error</p></th>
+<th class="head"><p>Training time (s)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>MLP</p></td>
+<td><p>0.984</p></td>
+<td><p>0.9561</p></td>
+<td><p>0.004</p></td>
+<td><p>98.26</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>MLP</p></td>
+<td><p>0.996</p></td>
+<td><p>0.9744</p></td>
+<td><p>0.003</p></td>
+<td><p>153.64</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>Random Forest</p></td>
+<td><p>0.798</p></td>
+<td><p>0.8054</p></td>
+<td><p>0.008</p></td>
+<td><p>1.7</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>Random Forest</p></td>
+<td><p>0.999</p></td>
+<td><p>0.9665</p></td>
+<td><p>0.004</p></td>
+<td><p>22.86</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="conclusion">
+<h2>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>In conclusion, we accept our hypothesis. The data shows that Random Forest algorithms can indeed converge to acceptable
+results in much shorter training time. Here, the most notable algorithms are the MLP in iteration 1, and the Random
+Forest in iteration 3. However, this conclusion does come with several limitations.</p>
+</div>
+<div class="section" id="future-works">
+<h2>Future Works<a class="headerlink" href="#future-works" title="Permalink to this headline">¶</a></h2>
+<p>More in depth study could probably speed up training time and accuracy of both algorithms. For instance, using the
+generated views showing which pixels bring the most importance to the algorithm’s final decision as seen in Figures 1
+and 2, we can determine that many pixels on the outer edges are mostly irrelevant to the final decision.
+Irrelevant pixels can be filtered out in pre-processing to speed up the MLP.</p>
+<img alt="_images/rf_feat_importance.png" src="_images/rf_feat_importance.png" />
+<dl class="simple">
+<dt><strong>Figure 1</strong></dt><dd><p>The feature importance of the Random Forest Algorithm in Iteration 3</p>
+</dd>
+</dl>
+<img alt="_images/mlp_coefficients.png" src="_images/mlp_coefficients.png" />
+<dl class="simple">
+<dt><strong>Figure 2</strong></dt><dd><p>The input layer’s coefficients into the first 16 neurons of the first hidden layer of the MLP in Iteration 1</p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="extension.html" class="btn btn-neutral float-right" title="Extending this package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="usage/test_suite.html" class="btn btn-neutral float-left" title="Test suite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Calixte Mayoraz, Christian Sandrini
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

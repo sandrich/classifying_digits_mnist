@@ -1,0 +1,266 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Extending this package &mdash; M-NIST digit classifier  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="api/api_ref.html" />
+    <link rel="prev" title="Results" href="results.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> M-NIST digit classifier
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="usage/installation.html">Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/installation.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/quickstart.html">Quick start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/params.html">Algorithm Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/test_suite.html">Test suite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">Results</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Extending this package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#adding-an-sklearn-algorithm">Adding an sklearn Algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#adding-a-custom-algorithm">Adding a Custom Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/api_ref.html">API Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">M-NIST digit classifier</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Extending this package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/extension.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="extending-this-package">
+<h1>Extending this package<a class="headerlink" href="#extending-this-package" title="Permalink to this headline">¶</a></h1>
+<p>This package was designed to be easily extendable and customizable for your own needs. All the technical aspects of this package’s extension can be found in the <a class="reference internal" href="api/api_ref.html"><span class="doc">API reference</span></a>. In this page, we only go over how to implement the algorithm itself, but you’ll still need to modify the <code class="docutils literal notranslate"><span class="pre">predict.py</span></code> file to make the algorithm accessible from the command line.</p>
+<div class="section" id="adding-an-sklearn-algorithm">
+<h2>Adding an sklearn Algorithm<a class="headerlink" href="#adding-an-sklearn-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>Adding a new algorithm to test against is fairly straightforward. The first step is to add a new class to the package. Let’s try adding a <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC">SVC algorithm</a> in a python file called <code class="docutils literal notranslate"><span class="pre">svc.py</span></code>.</p>
+<p>We need to make it implement the <code class="docutils literal notranslate"><span class="pre">AlgorithmMeta</span></code> class, which will ensure many builtin functionalities such as <code class="docutils literal notranslate"><span class="pre">fit</span></code>, <code class="docutils literal notranslate"><span class="pre">predict</span></code>, or <code class="docutils literal notranslate"><span class="pre">score</span></code>. The only thing we really need to do now is implement the class’s constructor.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;svc.py&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">mnist_classifier.algorithm_meta</span> <span class="kn">import</span> <span class="n">AlgorithmMeta</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+
+
+<span class="k">class</span> <span class="nc">SVCExtension</span><span class="p">(</span><span class="n">AlgorithmMeta</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">random_seed</span><span class="p">:</span> <span class="nb">int</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>         <span class="c1"># for reproducibility</span>
+                 <span class="n">report_directory</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># for AlgorithmMeta constructor</span>
+                 <span class="n">test_suite_iter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>   <span class="c1"># for AlgorithmMeta constructor</span>
+                 <span class="o">**</span><span class="n">svc_configuration_settings</span><span class="p">):</span> <span class="c1"># custom SVC settings</span>
+
+        <span class="c1"># initialize parent class</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">report_directory</span><span class="p">,</span> <span class="n">test_suite_iter</span><span class="o">=</span><span class="n">test_suite_iter</span><span class="p">)</span>
+
+        <span class="c1"># initialize the model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">,</span> <span class="o">**</span><span class="n">svc_configuration_settings</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And that’s it! If you wish to have more custom functions (such as <code class="docutils literal notranslate"><span class="pre">print_results</span></code> or <code class="docutils literal notranslate"><span class="pre">display_results</span></code>), feel free to overload any of <code class="docutils literal notranslate"><span class="pre">AlgorithmMeta</span></code>’s methods.</p>
+</div>
+<div class="section" id="adding-a-custom-algorithm">
+<h2>Adding a Custom Algorithm<a class="headerlink" href="#adding-a-custom-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>If you want to design your own algorithm and use this framework to test it, or if you want to implement a non-sklearn algorithm, you definitely can.</p>
+<p>We also create a class inheriting from <cite>AlgorithmMeta</cite>, but this time, we have to overload a few functions, since many functions take advantage of the fact that all we used so far was well structured <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> classifiers which have similar methods. Namely:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">__init__()</span></code> obviously.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fit()</span></code> to train the algorithm</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">predict()</span></code> to run a prediction</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">score()</span></code> which is actually inherited by <code class="docutils literal notranslate"><span class="pre">ClassifierMixin</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">save()</span> <span class="pre">and</span> <span class="pre">load()</span></code> depending on the library you are using.</p></li>
+</ul>
+</div></blockquote>
+<p>And this should ensure smooth sailing.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="api/api_ref.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="results.html" class="btn btn-neutral float-left" title="Results" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Calixte Mayoraz, Christian Sandrini
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
