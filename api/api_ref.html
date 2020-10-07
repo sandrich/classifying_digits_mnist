@@ -94,8 +94,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#algorithmmeta">AlgorithmMeta</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#randomforest">RandomForest</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#mlp">MLP</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dataset">Dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#visualizer">Visualizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mnist_classifier.dataset">Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-mnist_classifier.visualizer">Visualizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-mnist_classifier.report_manager">Report Manager</a></li>
 </ul>
 </li>
@@ -168,18 +168,413 @@
 <h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="algorithmmeta">
 <h2>AlgorithmMeta<a class="headerlink" href="#algorithmmeta" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="mnist_classifier.algorithm_meta.AlgorithmMeta">
+<em class="property">class </em><code class="sig-prename descclassname">mnist_classifier.algorithm_meta.</code><code class="sig-name descname">AlgorithmMeta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">report_directory</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">test_suite_iter</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.algorithm_meta.AlgorithmMeta" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Algorithm parent class which contains all the basic algorithm methods. Most of the logic of the algorithm is
+done here. Indeed, other than setting up the algorithm to match given specs (like number of trees or hidden layers)
+the train/test mechanics is the same.</p>
+<dl class="py method">
+<dt id="mnist_classifier.algorithm_meta.AlgorithmMeta.calc_standard_error">
+<em class="property">static </em><code class="sig-name descname">calc_standard_error</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">error</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">sample_count</span><span class="p">:</span> <span class="n">int</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.algorithm_meta.AlgorithmMeta.calc_standard_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the Wilson score interval with 95% confidence, based on the paper by Edwin B. Wilson <a class="footnote-reference brackets" href="#id2" id="id1">1</a>.</p>
+<dl class="footnote brackets">
+<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Edwin B. Wilson (1927) Probable Inference, the Law of Succession, and Statistical Inference,
+Journal of the American Statistical Association</p>
+</dd>
+</dl>
+<p>We interpret the results as the +/- of the error rate of the algorithm. For example,
+an error rate of 0.02 with 50 samples and a confidence of 95% yields 0.0388. So the error rate can be
+read as 0.02 +/- 0.0388.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>error</strong> (<em>float</em>) – the error rate of the test results</p></li>
+<li><p><strong>sample_count</strong> (<em>int</em>) – the number of test samples used</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the standard error</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.algorithm_meta.AlgorithmMeta.display_results">
+<code class="sig-name descname">display_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.algorithm_meta.AlgorithmMeta.display_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays various graphs that are pertinent to the algorithm’s score (such as a confusion matrix)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cache</strong> (<em>dict</em>) – the arguments to display (varies from algorithm to algorithm)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.algorithm_meta.AlgorithmMeta.eval_train_test_cache">
+<code class="sig-name descname">eval_train_test_cache</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">train_data</span></em>, <em class="sig-param"><span class="n">train_labels</span></em>, <em class="sig-param"><span class="n">test_data</span></em>, <em class="sig-param"><span class="n">test_labels</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.algorithm_meta.AlgorithmMeta.eval_train_test_cache" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a cache object containing the test and test data, labels, and accuracies, and a copy of the model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train_data</strong> (<em>numpy.array</em>) – the raw training data</p></li>
+<li><p><strong>train_labels</strong> (<em>numpy.array</em>) – the ground truth of the training data</p></li>
+<li><p><strong>test_data</strong> (<em>numpy.array</em>) – the data to test against</p></li>
+<li><p><strong>test_labels</strong> (<em>numpy.array</em>) – the ground truth of the test data</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>the actual data, predicted data, accuracy, and model in a dict format</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.algorithm_meta.AlgorithmMeta.fit">
+<code class="sig-name descname">fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">targets</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.algorithm_meta.AlgorithmMeta.fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits the internal model on the given data, and returns it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.array</em>) – the data on which you want to fit</p></li>
+<li><p><strong>targets</strong> (<em>numpy.array</em>) – the target classes of the training data you want to fit</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>sklearn.BaseEstimator</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>The trained model</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.algorithm_meta.AlgorithmMeta.load_model">
+<code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.algorithm_meta.AlgorithmMeta.load_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the model from disk into the object’s <code class="docutils literal notranslate"><span class="pre">model</span></code> attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – the path of the model on disk</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.algorithm_meta.AlgorithmMeta.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data_to_predict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.algorithm_meta.AlgorithmMeta.predict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns prediction of the class y for input</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data_to_predict</strong> (<em>numpy.array</em>) – Sample data set on which to generate predictions</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>numpy.array</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Array with the predicted class label</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.algorithm_meta.AlgorithmMeta.print_results">
+<code class="sig-name descname">print_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.algorithm_meta.AlgorithmMeta.print_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the results of the classification, and returns them as a pandas DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cache</strong> (<em>dict</em>) – the cache of a <code class="docutils literal notranslate"><span class="pre">run_classification()</span></code> function call.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the classification results as a single-line data frame</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.algorithm_meta.AlgorithmMeta.run_classification">
+<code class="sig-name descname">run_classification</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">train_data</span></em>, <em class="sig-param"><span class="n">train_labels</span></em>, <em class="sig-param"><span class="n">test_data</span></em>, <em class="sig-param"><span class="n">test_labels</span></em>, <em class="sig-param"><span class="n">model_to_save</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">model_to_load</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.algorithm_meta.AlgorithmMeta.run_classification" title="Permalink to this definition">¶</a></dt>
+<dd><p>Trains and tests the classification</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>train_data</strong> (<em>numpy.array</em>) – the data to train on</p></li>
+<li><p><strong>train_labels</strong> (<em>numpy.array</em>) – the labels of the train data</p></li>
+<li><p><strong>test_data</strong> (<em>numpy.array</em>) – the data to use to run predictions</p></li>
+<li><p><strong>labels</strong> (<em>test</em>) – the ground truth of the test data</p></li>
+<li><p><strong>model_to_load</strong> (<em>str</em>) – filepath of a saved model to load instead of train</p></li>
+<li><p><strong>model_to_save</strong> (<em>str</em>) – filepath on which to save the trained model</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>dict</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Returns collection with prediction and accuracy</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.algorithm_meta.AlgorithmMeta.save_model">
+<code class="sig-name descname">save_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.algorithm_meta.AlgorithmMeta.save_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the trained <cite>model</cite> attribute to disk</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – the destination filepath to save to disk to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.algorithm_meta.AlgorithmMeta.save_results">
+<code class="sig-name descname">save_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span><span class="p">:</span> <span class="n">pandas.core.frame.DataFrame</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.algorithm_meta.AlgorithmMeta.save_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the results to disk as a CSV file if the report_directory is not None. If the output report file already
+exists, it will have lines appended to it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>results</strong> (<em>pandas.DataFrame</em>) – the results table to save to disk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="randomforest">
 <h2>RandomForest<a class="headerlink" href="#randomforest" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="mnist_classifier.random_forest.RandomForest">
+<em class="property">class </em><code class="sig-prename descclassname">mnist_classifier.random_forest.</code><code class="sig-name descname">RandomForest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">n_estimators</span></em>, <em class="sig-param"><span class="n">max_depth</span></em>, <em class="sig-param"><span class="n">criterion</span></em>, <em class="sig-param"><span class="n">random_seed</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">report_directory</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">test_suite_iter</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.random_forest.RandomForest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Random Forest which inherits from the AlgorithmMeta class</p>
+<dl class="py method">
+<dt id="mnist_classifier.random_forest.RandomForest.display_results">
+<code class="sig-name descname">display_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.random_forest.RandomForest.display_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays various graphs that are pertinent to the algorithm’s score (such as a confusion matrix)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cache</strong> (<em>dict</em>) – the arguments to display (varies from algorithm to algorithm)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.random_forest.RandomForest.load_model">
+<code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.random_forest.RandomForest.load_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the model from disk into the object’s <code class="docutils literal notranslate"><span class="pre">model</span></code> attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – the path of the model on disk</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.random_forest.RandomForest.print_results">
+<code class="sig-name descname">print_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.random_forest.RandomForest.print_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the results of the classification, and returns them as a pandas DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cache</strong> (<em>dict</em>) – the cache of a <code class="docutils literal notranslate"><span class="pre">run_classification()</span></code> function call.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the classification results as a single-line data frame</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="mlp">
 <h2>MLP<a class="headerlink" href="#mlp" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="mnist_classifier.mlp.MLP">
+<em class="property">class </em><code class="sig-prename descclassname">mnist_classifier.mlp.</code><code class="sig-name descname">MLP</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">hidden_layer_sizes</span><span class="p">:</span> <span class="n">tuple</span> <span class="o">=</span> <span class="default_value">10, 10, 10</span></em>, <em class="sig-param"><span class="n">alpha</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">0.0001</span></em>, <em class="sig-param"><span class="n">batch_size</span><span class="o">=</span><span class="default_value">'auto'</span></em>, <em class="sig-param"><span class="n">max_iter</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">200</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">random_seed</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">report_directory</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">test_suite_iter</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.mlp.MLP" title="Permalink to this definition">¶</a></dt>
+<dd><p>A basic MLP classifier</p>
+<dl class="py method">
+<dt id="mnist_classifier.mlp.MLP.display_results">
+<code class="sig-name descname">display_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.mlp.MLP.display_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays various graphs that are pertinent to the algorithm’s score (such as a confusion matrix)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cache</strong> (<em>dict</em>) – the arguments to display (varies from algorithm to algorithm)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.mlp.MLP.load_model">
+<code class="sig-name descname">load_model</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filepath</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.mlp.MLP.load_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the model from disk into the object’s <code class="docutils literal notranslate"><span class="pre">model</span></code> attribute</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>filepath</strong> (<em>str</em>) – the path of the model on disk</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="mnist_classifier.mlp.MLP.print_results">
+<code class="sig-name descname">print_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.mlp.MLP.print_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the results of the classification, and returns them as a pandas DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>cache</strong> (<em>dict</em>) – the cache of a <code class="docutils literal notranslate"><span class="pre">run_classification()</span></code> function call.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the classification results as a single-line data frame</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pandas.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </div>
-<div class="section" id="dataset">
-<h2>Dataset<a class="headerlink" href="#dataset" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-mnist_classifier.dataset">
+<span id="dataset"></span><h2>Dataset<a class="headerlink" href="#module-mnist_classifier.dataset" title="Permalink to this headline">¶</a></h2>
+<p>Downloads and prepares the dataset for use with other algorithms</p>
+<dl class="py function">
+<dt id="mnist_classifier.dataset.load_test_data">
+<code class="sig-prename descclassname">mnist_classifier.dataset.</code><code class="sig-name descname">load_test_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.dataset.load_test_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the test data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.array</em>) – 2D numpy array with the image data (one image per row)</p></li>
+<li><p><strong>labels</strong> (<em>numpy.array</em>) – 1D numpy array with the label for each corresponding image</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mnist_classifier.dataset.load_train_data">
+<code class="sig-prename descclassname">mnist_classifier.dataset.</code><code class="sig-name descname">load_train_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.dataset.load_train_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>loads the training data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><strong>data</strong> (<em>numpy.array</em>) – 2D numpy array with the image data (one image per row)</p></li>
+<li><p><strong>labels</strong> (<em>numpy.array</em>) – 1D numpy array with the label for each corresponding image</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
-<div class="section" id="visualizer">
-<h2>Visualizer<a class="headerlink" href="#visualizer" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-mnist_classifier.visualizer">
+<span id="visualizer"></span><h2>Visualizer<a class="headerlink" href="#module-mnist_classifier.visualizer" title="Permalink to this headline">¶</a></h2>
+<p>Visualizer</p>
+<dl class="py function">
+<dt id="mnist_classifier.visualizer.display_loss_curve">
+<code class="sig-prename descclassname">mnist_classifier.visualizer.</code><code class="sig-name descname">display_loss_curve</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">losses</span></em>, <em class="sig-param"><span class="n">save_location</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.visualizer.display_loss_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots and displays the loss curve (usually for Neural Network models)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>save_location</strong> (<em>str</em>) – the location to save the figure on disk. If None, the plot is displayed on runtime and not saved.</p></li>
+<li><p><strong>losses</strong> (<em>numpy.array</em>) – the losses array of the MLP classifier’s training.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the figure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>matplotlib.pyplot.figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mnist_classifier.visualizer.display_mlp_coefficients">
+<code class="sig-prename descclassname">mnist_classifier.visualizer.</code><code class="sig-name descname">display_mlp_coefficients</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coefficients</span></em>, <em class="sig-param"><span class="n">rows</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">cols</span><span class="o">=</span><span class="default_value">4</span></em>, <em class="sig-param"><span class="n">save_location</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.visualizer.display_mlp_coefficients" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows the first layer’s coefficients of the input layer</p>
+<p>The first rows*cols neurons’ coefficients are displayed. if rows*cols is greater than the number of neurons, all the
+neurons are displayed. If there are more neurons’ worth of coefficients to display than rows*cols, only the first
+ones are displayed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numpy.array</strong> (<em>coefficients</em>) – 2D numpy array containing the input coefficients (or weights) of the MLP’s hidden layers. Only the first
+layer’s coefficients are displayed</p></li>
+<li><p><strong>rows</strong> (<em>int</em>) – the number of rows to display in the figure</p></li>
+<li><p><strong>cols</strong> (<em>int</em>) – the number of columns to display in the figure</p></li>
+<li><p><strong>save_location</strong> (<em>str</em>) – the location to save the figure on disk. If None, the plot is displayed on runtime and not saved.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the figure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>matplotlib.pyplot.figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mnist_classifier.visualizer.display_rf_feature_importance">
+<code class="sig-prename descclassname">mnist_classifier.visualizer.</code><code class="sig-name descname">display_rf_feature_importance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache</span></em>, <em class="sig-param"><span class="n">save_location</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.visualizer.display_rf_feature_importance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays which pixels have the most influence in the model’s decision.
+This is based on sklearn,ensemble.RandomForestClassifier’s feature_importance array</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>save_location</strong> (<em>str</em>) – the location to save the figure on disk. If None, the plot is displayed on runtime and not saved.</p></li>
+<li><p><strong>cache</strong> (<em>dict</em>) – the cache dict returned by the classifier.
+Must at least include [‘actual’, ‘prediction’] objects, each with [‘train’, ‘test’] arrays</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the figure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>matplotlib.pyplot.figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mnist_classifier.visualizer.display_train_test_matrices">
+<code class="sig-prename descclassname">mnist_classifier.visualizer.</code><code class="sig-name descname">display_train_test_matrices</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cache</span></em>, <em class="sig-param"><span class="n">save_location</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="headerlink" href="#mnist_classifier.visualizer.display_train_test_matrices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays the train and test confusion matrices</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>save_location</strong> (<em>str</em>) – </p></li>
+<li><p><strong>location to save the figure on disk. If None</strong> (<em>the</em>) – </p></li>
+<li><p><strong>plot is displayed on runtime and not saved.</strong> (<em>the</em>) – </p></li>
+<li><p><strong>cache</strong> (<em>dict</em>) – the cache dict returned by the classifier.
+Must at least include [‘actual’, ‘prediction’] objects, each with [‘train’, ‘test’] arrays</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the figure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>matplotlib.pyplot.figure</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-mnist_classifier.report_manager">
 <span id="report-manager"></span><h2>Report Manager<a class="headerlink" href="#module-mnist_classifier.report_manager" title="Permalink to this headline">¶</a></h2>
