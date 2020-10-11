@@ -45,8 +45,11 @@ class MLP(AlgorithmMeta):
             raise ValueError("Each layer must have a positive number of neurons!")
         if max_iter <= 0:
             raise ValueError("You need at least one training iteration!")
-        if batch_size != "auto" and not isinstance(batch_size, int):
-            raise ValueError("batch size must either be an integer value or 'auto'!")
+        if batch_size != "auto":
+            try:
+                batch_size = int(batch_size)
+            except ValueError as error:
+                raise ValueError("batch size must either be an integer value or 'auto'!") from error
         if isinstance(batch_size, int) and batch_size <= 0:
             raise ValueError("batch size must be positive!")
 

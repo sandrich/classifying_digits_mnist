@@ -43,13 +43,13 @@ def parse_args(args):
                             default=['100'])
     mlp_parser.add_argument('--alpha', '-a', type=float, help="the alpha bias of the MLP", default=0.0001)
     mlp_parser.add_argument('--batch_size', '-b', help="The batch size of training. you can specify a number or 'auto'",
-                            default='auto', type=int)
+                            default='auto')
     mlp_parser.add_argument('--max_iter', '-i', type=int,
                             help="The number of maximum training iterations to perform", default=200)
     mlp_parser.add_argument('--verbose', '-v',
                             help="Show training iterations with losses while training", action="store_true")
 
-    return parser.parse_args(args)
+    return parser.parse_args(args) if len(args) > 0 else parser.parse_args()
 
 
 def main(*arguments):
@@ -60,7 +60,8 @@ def main(*arguments):
     *arguments : list
         potential arguments to be passed programmatically.
     """
-    args = parse_args(*arguments)
+
+    args = parse_args(arguments)
 
     if args.test_suite is not None:
         test_suite = report_manager.load_test_suite_conf(args.test_suite)
@@ -74,6 +75,8 @@ def load_report_directory(args):
     """
     Loads report directory if exists
     """
+    if args.report_directory is None:
+        return args
     args.report_directory = report_manager.prepare_report_dest(args.report_directory)
     return args
 
@@ -90,11 +93,23 @@ def process_args_and_run(args, test_suite_iter: int = None):
     """
     # load global arguments
     if args.save is not None and args.load is not None:
-        print("Can't load and save a model at the same time... please choose just one of the two options")
+        print("Can't load and save a model at the same time..."
+              "please choose just one of the two options")
         sys.exit(1)
 
     if test_suite_iter is None:
         load_report_directory(args)
+
+    #check if no parameters are given
+    if all([argument not in args for argument in ['depth',
+                                                  'impurity_method',
+                                                  'trees',
+                                                  'alpha',
+                                                  'hidden_layers',
+                                                  'max_iter',
+                                                  'verbose']]):
+        print("Please select at least one algorithm or test-suite to run this program")
+        sys.exit()
 
     # Load dataset
     train_data, train_labels = dataset.load_train_data()

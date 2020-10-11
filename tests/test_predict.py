@@ -1,6 +1,7 @@
 """
 Testing entrypoint
 """
+import os
 import sys
 import unittest
 from shutil import rmtree
@@ -43,7 +44,8 @@ class TestEntrypoint(unittest.TestCase):
         """
         args = AttrDict()
         args.update({'report_directory':'foo'})
-        self.assertEqual(predict.load_report_directory(args),{'report_directory': 'reports/foo'})
+        self.assertEqual(predict.load_report_directory(args),
+                         {'report_directory': os.path.join('reports','foo')})
 
     def test_hidden_layer_value(self):
         """
@@ -109,6 +111,6 @@ class TestEntrypoint(unittest.TestCase):
         # Test mlp sub commands
         parser = predict.parse_args(['mlp', '-a', '1', '-b', '1', '-i', '1', '-v'])
         self.assertEqual(parser.alpha, 1)
-        self.assertEqual(parser.batch_size, 1)
+        self.assertEqual(parser.batch_size, '1')
         self.assertEqual(parser.max_iter, 1)
         self.assertTrue(parser.verbose)
